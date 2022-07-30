@@ -17,23 +17,27 @@ class Tank{
 
 		double getCapacity(){return this->capacity;}
 
-		double fill(double fuel){
-
-			if(fuelLevel+fuel <= capacity)
-			{
-				fuelLevel += fuel;
-				return 0;
-			}
-
-			fuelLevel = capacity;
-			return (double)capacity-(fuelLevel+fuel);
-		}
+		double fill(double fuel)
+	    {
+	        double eccesso = 0;
+	        if ((fuelLevel + fuel) <= capacity)
+	        {
+	            fuelLevel += fuel;
+	            return 0;
+	        }
+	        else
+	        {
+	            eccesso = (fuelLevel + fuel) - capacity;
+	            fuelLevel = capacity;
+	            return eccesso;
+	        }
+	    }
 
 		bool consume(double fuel){
 
 			if(fuelLevel >= fuel)
 			{
-				fuelLevel-fuel;
+				fuelLevel -= fuel;
 				return true;
 			}
 			return false;
@@ -81,44 +85,24 @@ class Car : public Vehicle{
 	public:
 		Car(double chilometers) : Vehicle{4, chilometers, 55, 25},times(0){}
 
-		bool drive(double km){
-
-			double fuel = km * 0.075;
-
-			if(getTankLevel() < (55/2))
-				fuel -= (fuel*5)/100;
-
-			if(getTankLevel() >= fuel)
-			{
-				tank.consume(fuel);
-				this->chilometers += km;
-				times ++;
-				return true;
-			}else{
-				return false;
-			}
-		}
-
-	/*bool drive(double km)
-    {
-        double serve = km * 0.075;
-        if (Car::getTankLevel() <= 0.5)
-        {
-            double temp = serve;
-            serve -= (double)((temp * 5) / 100);
-        }
-        if (tank.hasFuel(serve))
-        {
-            tank.consume(serve);
-            chilometers += km;
-            times += 1;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }*/
+		bool drive(double km)
+	    {
+	        double fuel = km * 0.075;
+	        if (this->tank.hasFuel(fuel) <= 0.5)
+	            fuel -= (double)((fuel * 5) / 100);
+	        
+	        if (tank.hasFuel(fuel))
+	        {
+	            tank.consume(fuel);
+	            chilometers += km;
+	            times += 1;
+	            return true;
+	        }
+	        else
+	        {
+	            return false;
+	        }
+	    }
 
 		int getTimes(){return this->times;}
 
@@ -140,7 +124,7 @@ class Truck : public Vehicle{
 			if(this->chilometers > 200000)
 				fuel += (fuel*20)/100;
 
-			if(getTankLevel() >= fuel)
+			if(this->tank.hasFuel(fuel))
 			{
 				tank.consume(fuel);
 				this->chilometers += km;
@@ -150,26 +134,6 @@ class Truck : public Vehicle{
 			}
 		}
 
-/*	bool drive(double km)
-    {
-        double serve = km * 0.4;
-        if (chilometers > 200000)
-        {
-            double temp = serve;
-            serve += (double)((temp * 20) / 100);
-        }
-        if (tank.hasFuel(serve))
-        {
-            tank.consume(serve);
-            chilometers += km;
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-*/
 		ostream& print(ostream& os){
 			return Vehicle::print(os);
 		}
