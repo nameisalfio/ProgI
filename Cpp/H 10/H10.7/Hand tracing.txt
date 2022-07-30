@@ -1,0 +1,7 @@
+Hand tracing H.10.7
+
+Ambiente di utilizzo | Lunghezza | Carico massimo | Essenza  | Spessore 
+
+      interno        |   1.5m    |     80kg       |  Pino    |  0.031 m
+      esterno        |   1.0m    |     100kg      | Castagno |  0.018 m
+      interno        |   1.0m    |     120kg      |  Pino    |  0.024 m

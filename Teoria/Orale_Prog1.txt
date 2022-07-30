@@ -1,0 +1,230 @@
+Teorema di BOHM-JACOPINI :
+---------------------
+Qualunque algoritmo può essere realizzato utilizzando le sole tre strutture di controllo fondamentali: 
+la sequenza, la selezione ed il ciclo
+
+ALLOCAZIONE DELLA MEMORIA:
+--------------------------
+Scegliere come allocare la memoria per una variabile dipende dal tipo di problema che si deve risolvere.
+Vi sono vari tipi di allocazione per collocare variabili in diversi segmenti di memoria:
+
+-Allocazione STATICA:
+La quantità di memoria da allocare è determinata e fissata a tempo di compilazione. Una variabile allocata 
+staticamente viene collocata nello stack. La memoria allocata staticamente viene liberata quando termina il 
+ciclo di vita della variabile, ciò rende impossibile ad una funzione, per esempio, il ritorno di un vettore 
+allocato staticamente al suo interno.
+
+-Allocazione DINAMICA:
+Permette di definire variabili che possono essere create o accresciute in fase di esecuzione. Una variabile 
+allocata dinamicamente viene collocata nello heap(free store). La memoria occupata allocando dinamicamente non
+viene restituita quando termina il ciclo di vita delle variabili che invece permangono nella RAM. Si alza il 
+rischio di memory leak, quindi è buona norma deallocare manualmente la memoria precedentemente occupata. 
+Questo tipo di allocazione si rende necessaria per il ritorno di vettori da parte di una funzione.
+
+ARRAY:
+----------------------
+Sequenza di locazioni di memoria riservata ad una serie di dati dello stesso tipo. Gli oggetti si chiamano 
+elementi dell'array e si numerano consecutivamente con espressioni intere che assumono valori da 0 a n-1 (con 
+n=dimensione dell'array) e possiamo accedere all'i-esimo elemento di un vettore 'vet' con la sintassi vet[i-1];
+Questi numeri si dicono indici dell’array, ed il loro ruolo è quello di localizzare la posizione di ogni 
+elemento dentro l’array, fornendo acceso diretto ad esso.
+Il tipo di elementi immagazzinati nell'array può essere sia built-in che un tipo user-defined.
+Il nome del vettore è l'indirizzo in memoria del primo elemento(il suo puntatore).
+
+PUNTATORI E REFERENCE:
+-----------------------
+Sia i puntatori che i riferimenti possono essere usati per riferirsi agli oggetti indirettamente. Sostengono 
+essenzialmente gli indirizzi di memoria come valori. Il differenza fondamentale tra un puntatore e un 
+riferimento è quello un puntatore è una variabile che memorizza l'indirizzo della posizione di memoria di 
+un'altra variabile mentre un reference è una variabile che fa riferimento a un'altra variabile(alias). 
+I due meccanismi, il pointer e riferimento, hanno sintassi e utilizzo diversi.
+-Sia puntatori che reference sono stati concepiti per limitare l'overhead (risorse accessorie, ma necessarie, 
+ per ottenere un determinato scopo)
+
+-Un puntatore può essere nullo, nel senso che non mantiene l'indirizzo di alcuna variabile o portebbe non 
+ essere inizializzato
+-Un reference deve essere inizializzato contestualmente alla sua dichiarazione
+
+-Un puntatore può puntare ad un altra variabile
+-Un reference invece non può cambiare oggetto di riferimento
+
+-La sintassi per un puntatore può essere tediosa
+-La sintassi per un reference è molto più intuitiva
+
+-Per la creazione di una collezione di oggetti vengono utilizzati i puntatori e non è possibile sostituirli 
+ con i  puntatori
+
+-Passaggio di parametri per riferimento permette di passare l'indirizzo di una variabile e quindi ne modifica 
+ lo stato
+
+-Puntatori utilizzati per allocazioni dinamiche della memoria(heap o free store).
+
+CONST 
+-------
+Per rendere un riferimento di sola letture (renderlo read-only) si usa la keyword const. Nel caso di un 
+oggetto referenziato da un read-only reference, esso non potrà invocare metodi che ne modificano lo 
+stato interno.Per comunicare al compilatore che il metodo è di sola lettura si aggiunge "const" dopo
+la lista di parametri. Utile l'utilizzo nei metodi getter(aumenta la sicurezza del codice).
+
+STATIC
+-------
+Attributo:
+La parola static può essere utilizzata per dichiarare delle variabili di classe. Queste sono diverse dalle 
+variabili (o attributi)di istanza. Ogni oggetto ha una sua copia delle variabili di istanza. Le variabili di 
+classe sono invece condivise tra tutte le istanze di una data classe.
+Non è possibile inizializzare un attributo di classe ma l’inizializzazione è comunque obbligatoria e va 
+fatta “fuori” dalla definizione della classe.
+
+Variabile locale:
+Una variabile locale static definita all’interno di una funzione o un metodo, viene dichiarata e inizializzata
+solo la prima volta che il metodo viene invocato e utilizzata nelle successive invocazioni.
+
+Metodi Static
+I metodi static sono dei metodi il cui funzionamento non dipende dallo stato dell’istanza. Se un metodo non 
+dipende dallo stato, ma solo da una variabile static, quindi può essere definito come static.
+Dato che l’esecuzione di un metodo statico non dipende da una specifica istanza, posso anche richiamare un 
+metodo statico anche in maniera indipendente da una istanza (es. Classe::getCount(); )
+
+FRIEND
+-------
+usata per dare accesso ad una classe "amica" a tutti i contenuti private della classe. La friendship non è 
+una proprietà simmetrica, infatti se una classe X è friend di Y, non è necessariamente vero anche il contrario.
+
+OVERLOADING
+--------------------
+C++ consente di specificare più di una funzione con lo stesso nome (funzioni overload). Esse consentono di 
+specificare semantiche diverse per una stessa funzione, a seconda dei tipi e del numero di argomenti. 
+Quindi si hanno funzioni con lo stesso nome che cambiano semantica sulla base della loro firma.
+
+OVERRIDING
+--------------------
+Nella programmazione ad oggetti assume notevole importanza la possibilità di creare classi a partire da classi
+già esistenti (ereditarietà). Nella programmazione ad oggetti override è l'operazione di riscrittura di un
+metodo ereditato.
+Si hanno quindi metodi con la stessa firma che assumono una semantica diversa sulla base dell'oggetto che li 
+invoca.
+
+Principio di LISKOV: 
+--------------------
+Un tipo S è un sottotipo di T quando è possibile sostituire tutte le istanze di T con delle istanze di S 
+mantenendo intatto il funzionamento del programma.
+
+TEMPLATE
+-------------------
+In C++, il template implementa il concetto di tipo parametrizzato: il tipo viene specificato come se fosse
+un parametro. I templates permettono di implementare classi e funzioni indipendentemente dal tipo di oggetti 
+su cui operano(user-defined e primitivi)
+
+Una funzione template è una sorta di modello dal quale il compilatore genera opportune specializzazioni in 
+corrispondenza di chiamate a funzione con parametri differenti(si riduce il lavoro del programmatore).
+
+Una classe template specifica una famiglia di definizioni di classi. Il tipo generico è usato per dati interni 
+alla classe e per i parametri e i dati locali delle funzioni membro.
+
+Conformità di tipo
+---------------------
+Possibilità di assegnare ad un reference/puntatore di classe madre un oggetto di classe figlia.
+
+OOP [object oriented programming]
+---------------------
+PRINCIPI DELLA OOP :
+
+1) Astrazione 
+2) Incapsulamento
+3) Ereditarietà
+4) Polimorfismo
+
+Astrazione :
+---------------------
+Generalizzare i concetti da affrontare per avere un interfaccia comune per tutti gli oggetti di quel tipo.
+
+Incapsulamento (information Hiding) :
+---------------------
+Utilizzo di "modificatori di accesso" in modo che alcune informazioni risultino publiche e che altre rimangano
+nascoste all'esterno e accessibili solo ai membri della classe stessa. 
+
+Ereditarietà :
+---------------------
+Meccanismo che consente livelli di astrazione gerarchici che consentono di conservare le proprietà della classe base 
+nelle classi derivate.
+
+Polimorfismo
+---------------------
+Possibilità di presentarsi sotto diverse forme. In questo contesto il polimorfismo rappresenta uno dei 4 principi
+cardine della OOP e si manifesta quando in una gerarchia ereditaria vi sono ridefinizioni dello stesso metodo
+(stessa firma) che ha un comportamento diverso a seconda dell'oggetto chiamante(OVERRIDING). Questo favorisce il 
+riutilizzo del codice
+
+ POLIMORFISMO STATICO
+ 
+Quando un puntare/reference di tipo di classe base punta o diventa alias di un oggetto di classe 
+derivata(conformità di tipo).
+Si verifica lo static binding, ovvero il riconoscimento di tipo anticipato rispetto al momento dell'esecuzione.
+Il compilatore cerca il metodo invocato su un oggetto del tipo che si trova d'avanti.
+
+ POLIMORFISMO DINAMICO
+
+Il "vero" polimorfismo, nella pienezza del suo significato "filosofico", deve essere associato al"late binding":
+la differenziazione di comportamento degli oggetti in risposta allo stesso messaggio non deve essere statica e 
+predefinita, ma dinamica, cioè deve essere determinata dal contesto del programma in fase di esecuzione. 
+Vedremo che ciò é realizzabile solo nell'ambito di una stessa famiglia di classi, e quindi il "vero" polimorfismo NON
+può prescindere dall'eredità e si applica a funzioni-membro, con lo stesso nome e gli stessi argomenti, che 
+appartengono sia alla classe base che alle sue derivate.
+Per ottenere il polimorfismo dinamico si utilizza la keyword "virtual" per etichettare il metodo della classe madre
+che non verrà mai realmente invocato e si indica nei metodi delle classi figlie che sono "override".
+
+L'applicazione della parola chiave virtual ai metodi di una classe consente di condizionare l'esecuzione del codice 
+secondo il tipo dell'istanza oggetto cui si fa riferimento.
+Se le funzioni della interfaccia sono dichiarate VIRTUAL, si ottiene il polimorfismo a run-time.
+Il costruttore non è mai virtual mentre per favorire una riduzione del memory leak (consumo non voluto di memoria dovuto alla mancata deallocazione dalla memoria) è utile spesso dichiarare il distruttore come virtual.
+
+Overriding + virtual = Polimorfimo dinamico (a tempo di esecuzione).
+• In presenza di puntatori e/o reference, al compilatore non sarà noto il tipo di oggetto referenziato.
+l polimorfismo a tempo di esecuzione avviene mediante puntatori e/o reference
+
+FUNZIONE VIRTUALE PURA
+---------------------
+In certi casi non è possibile dare una definizione di base di un metodo nella classe madre, si parla allora di metodi virtuali puri, ovvero il significato di quel metodo deve essere necessariamente ridefinito nelle classi figlie affinchè possa essere istanziato correttamente l'oggetto.
+
+• Una classe con una o più funzioni virtuali pure si dice classe astratta
+• Non si possono creare istanze di una classe astratta.
+• È comunque possibile dichiarare puntatori e reference a tipi astratti.
+• Se una classe derivata non fornisce l’implementazione di una o più funzioni virtuali pure, allora anche essa diverrà
+ astratta;
+ 
+ 
+INTERFACCIA
+---------------------
+Una classe base astratta che contiene solamente:
+
+1) attributi costanti  
+2) funzioni virtuali pure si dice Interfaccia.
+
+In un interfaccia nessun comportamento è definito, ma semplicemente dichiarato (solo specifiche senza implementazione).
+
+RTTI
+---------------------
+La RTTI (RunTime Type Information o RunTime Type Identification) consente ai programmi che manipolano puntatori e 
+riferimenti ad oggetti di una classe base, di determinare il tipo dell'oggetto durante l'esecuzione invece che solo
+al momento della compilazione.
+
+1) DYNAMIC CAST + CONTROLLO dell'esistenza del puntatore per capire se il cast è avvenuto con successo
+2) TYPEID() + STATIC CAST
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

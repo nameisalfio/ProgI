@@ -1,0 +1,9 @@
+string** A = new string *[n];
+	for(int j=0; j<n; j++){
+		
+		A[j] = new string [m];
+		for(int k=0; k<m; k++){
+			cout<<"Inserisci una stringa nella matrice A : "<<endl;
+			cin>>A[j][k];
+		}
+	}

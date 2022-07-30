@@ -1,0 +1,34 @@
+#include<iostream>
+using namespace std;
+
+int main (void) {
+
+int max,min,N;
+
+cout<<"Inserisci il valore di N: "<<endl; //L'utente stabilisce la dimensione dell'array
+cin>>N;
+
+int A [N];
+
+max = A [0];
+min = A [0];
+for(int i = 0;i < N; i++){
+cout<<"Inserisci un valore: "<<endl;  //L'utente inserisce i valori nell'array
+cin>> A [i];
+
+  if (A [i]>max)               //Controllo del massimo e del minimo
+  max = A[i];
+  
+  if (A [i]<min)
+  min = A[i];
+}
+
+cout<<"\n Valori inseriti nell'array :"<<endl;  //Visualizzo l'array 
+for (int i = 0; i < N; i++)
+cout<<A [i]<<endl;
+
+cout<<"Il valore massimo e' :"<<max<<endl;
+cout<<"Il valore minimo e' :"<<min<<endl;
+
+return 0;
+}
