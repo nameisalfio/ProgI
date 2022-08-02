@@ -91,19 +91,22 @@ public:
 		getTop() = deck[idx];
 		deck[idx] = tmp;
 
-		cout << "Entra se " << *getTop()  << " è <= di " << *deck[idx] << endl;
+		cout << "Entra se " << *getTop()  << " e' <= di " << *deck[idx] << endl;
 		if (*getTop() <= *deck[idx])
 		{
 			Card **toreturn = new Card *[10]; // No allocazione statica(deve essere restituito)
 			string toremove = (string)(getTop()->getSuit());
 
 			int pos = 0;
+			cout << "Changes: " << endl;
 			for(int i=0; i<size; i++)
 			{
-				if ((string)(getTop()->getSuit()) == toremove)
-				{
+				if ((string)(deck[0]->getSuit()) == toremove)
+				{	
 					toreturn[pos++] = new Card(*getTop());
 					this->remove(0);
+
+					cout << *toreturn[pos-1] << endl;
 				}
 			}
 
@@ -250,7 +253,7 @@ public:
 
 	int combine(){
 
-		Deck::shuffle();
+		//Deck::shuffle();
 		int n = getAmount();
 
 		//Card** vet{changes(getAmount()-1)};
@@ -272,8 +275,21 @@ public:
 
 		rate++;
 		return 0;
+	}
 
-	
+	bool handling(){
+
+		Card* temp = deck[rand() % getAmount()];
+		Deck::shuffle();
+
+		if(  ((temp->getVal()%2) && (deck[rand() % getAmount()]->getVal()%2)) ||
+			(!(temp->getVal()%2) && !(deck[rand() % getAmount()]->getVal()%2))   )
+		{
+			rate++;
+			return true;
+		}
+
+		return false;
 	}
 
 	ostream& print (ostream& os){
@@ -289,6 +305,7 @@ int main()
 	srand(111222333);
 
 	Loyal_Deck ld{};
+	ld.shuffle();
 	cout << ld << endl;
 	cout << "Somma: \n" << ld.combine() << endl;
 	cout << ld << endl;
