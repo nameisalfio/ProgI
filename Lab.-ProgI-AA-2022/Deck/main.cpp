@@ -8,7 +8,7 @@ using namespace std;
 class Card
 {
 
-	int val;		 // valore
+	int val; // valore
 	char *card_suit; // seme
 
 public:
@@ -83,28 +83,27 @@ public:
 
 	Card **changes(int idx)
 	{
-		// Pone in cima la carta
-		if(!deck[idx] || !getTop())
-			return nullptr;
+//		if(!deck[idx] || !getTop())
+//			return nullptr;
 
+		// Pone in cima la carta
 		Card *tmp = getTop();
 		getTop() = deck[idx];
 		deck[idx] = tmp;
 
+		cout << "Entra se " << *getTop()  << " è <= di " << *deck[idx] << endl;
 		if (*getTop() <= *deck[idx])
 		{
 			Card **toreturn = new Card *[10]; // No allocazione statica(deve essere restituito)
 			string toremove = (string)(getTop()->getSuit());
+
 			int pos = 0;
 			for(int i=0; i<size; i++)
 			{
-				if(deck[i])
+				if ((string)(getTop()->getSuit()) == toremove)
 				{
-					if ((string)(deck[i]->getSuit()) == toremove)
-					{
-						toreturn[pos++] = new Card(*deck[i]);
-						this->remove(i);
-					}
+					toreturn[pos++] = new Card(*getTop());
+					this->remove(0);
 				}
 			}
 
@@ -117,9 +116,9 @@ public:
 
 	void shuffle()
 	{
-		Card *temp[size];
+		Card *temp[getAmount()];
 
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < getAmount(); i++)
 		{	
 			int r = rand() % 41;
 			
@@ -133,36 +132,41 @@ public:
 
 	Card *&getTop() { return this->deck[0]; }
 
+	int getAmount(){
+		int n_carte = 0;
+
+		for(int i=0; i<size; i++)
+		{
+			if(deck[i])
+				n_carte ++;
+		}
+		return n_carte;
+	}
+
 	void remove(int idx) { 
 		if(!deck[idx])
 			return;
 
-		int i = 1;
-		while(deck[idx+i])
+		for(int i=idx; i<getAmount(); i++)
 		{
-			deck[idx] = new Card(*deck[idx+i]);
-			i++;
+			if(deck[i] && deck[i+1])
+				deck[i] = deck[i+1];
 		}
-
-		//this->deck[idx] = nullptr; 
+		deck[getAmount()-1] = nullptr;
 	}
 
 	virtual ostream &print(ostream &os)
 	{
-		os << "Class: " << typeid(*this).name() << endl;
-		int count = 0;
+		os << "\nClass: " << typeid(*this).name() << endl;
 
 		os << "Deck:\n";
-		for (int i = 0; i < size; i++)
+		for (int i = 0; i < getAmount(); i++)
 		{
 			if (deck[i])
-			{
 				os << "\t" << i+1 << ") " << *deck[i] << endl;
-				count++;
-			}
 		}
 
-		return os << "\nNumero carte: " << count << endl;
+		return os << "\nNumero carte: " << this->getAmount();
 	}
 
 	Card*& operator[](int idx){return deck[idx];}
@@ -215,8 +219,7 @@ public:
 	}
 
 	ostream& print (ostream& os){
-		Deck::print(os);
-		return os << "\nplay()= " << play();
+		return Deck::print(os);
 	}
 };
 
@@ -229,31 +232,53 @@ public:
 
 	int play(){
 		
-		//Deck::shuffle();
+		Deck::shuffle();
 
 		Card* temp = getTop();
 		remove(0);
 
-		if(*temp <= *deck[1])
+		if(*temp <= *getTop())
 		{
-			if(deck[3])
-				Deck::changes(20);
-
-			int n_carte = 0;
-			for(int i=0; i<size; i++)
-			{
-				if(deck[i])
-					n_carte ++;
-			}
-			return n_carte;
+			Deck::changes((int)getAmount()/2);
+			return getAmount();
 		}
 		rate++;
 		return 0;
 	}
 
+	int getRate(){return this->rate;}
+
+	int combine(){
+
+		Deck::shuffle();
+		int n = getAmount();
+
+		//Card** vet{changes(getAmount()-1)};
+		Card** vet{changes(4)};
+
+		n -= getAmount(); //numero di carte tolte(non rimaste)
+
+		if(vet)
+		{
+			int sum = 0;
+			for(int i=0; i< n; i++)
+			{
+				if(vet[i])
+					sum += vet[i]->getVal();
+			}
+
+			return sum;
+		}
+
+		rate++;
+		return 0;
+
+	
+	}
+
 	ostream& print (ostream& os){
-		return Deck::print(os);
-		return os << "\nplay()= " << play() << ", rate= " << rate;
+		Deck::print(os);
+		return os << ", rate= " << rate;
 	}
 };
 
@@ -264,7 +289,8 @@ int main()
 	srand(111222333);
 
 	Loyal_Deck ld{};
-	ld.remove(0);
-	cout << *ld[0] << endl;
+	cout << ld << endl;
+	cout << "Somma: \n" << ld.combine() << endl;
+	cout << ld << endl;
 
 }
