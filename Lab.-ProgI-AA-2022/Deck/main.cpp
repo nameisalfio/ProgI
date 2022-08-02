@@ -44,6 +44,8 @@ public:
 
 	bool operator<=(const Card &other) { return this->val <= other.val; }
 
+	bool operator<=(const int &other) { return this->val <= other; }
+
 	friend ostream &operator<<(ostream &os, const Card &c)
 	{
 		return os << c.getVal() << " di " << c.getSuit();
@@ -53,10 +55,9 @@ public:
 class Deck
 {
 
-	const int size;
-
 protected:
 	Card **deck;
+	const int size;
 
 public:
 	Deck() : size(40)
@@ -82,8 +83,9 @@ public:
 
 	Card **changes(int idx)
 	{
-
 		// Pone in cima la carta
+		if(!deck[idx] || !getTop())
+			return nullptr;
 
 		Card *tmp = getTop();
 		getTop() = deck[idx];
@@ -96,10 +98,13 @@ public:
 			int pos = 0;
 			for(int i=0; i<size; i++)
 			{
-				if ((string)(deck[i]->getSuit()) == toremove)
+				if(deck[i])
 				{
-					toreturn[pos++] = new Card(*deck[i]);
-					this->remove(i);
+					if ((string)(deck[i]->getSuit()) == toremove)
+					{
+						toreturn[pos++] = new Card(*deck[i]);
+						this->remove(i);
+					}
 				}
 			}
 
@@ -112,22 +117,35 @@ public:
 
 	void shuffle()
 	{
-
 		Card *temp[size];
 
 		for (int i = 0; i < size; i++)
-		{
+		{	
 			int r = rand() % 41;
-
+			
 			temp[i] = deck[i];
 			deck[i] = deck[r];
 			deck[r] = temp[i];
 		}
 	}
 
+	virtual int play() = 0;
+
 	Card *&getTop() { return this->deck[0]; }
 
-	void remove(int idx) { this->deck[idx] = nullptr; }
+	void remove(int idx) { 
+		if(!deck[idx])
+			return;
+
+		int i = 1;
+		while(deck[idx+i])
+		{
+			deck[idx] = new Card(*deck[idx+i]);
+			i++;
+		}
+
+		//this->deck[idx] = nullptr; 
+	}
 
 	virtual ostream &print(ostream &os)
 	{
@@ -139,33 +157,114 @@ public:
 		{
 			if (deck[i])
 			{
-				os << "\t" << *deck[i] << endl;
+				os << "\t" << i+1 << ") " << *deck[i] << endl;
 				count++;
 			}
 		}
 
 		return os << "\nNumero carte: " << count << endl;
 	}
+
+	Card*& operator[](int idx){return deck[idx];}
 };
 
-ostream &operator<<(ostream &os, Deck &d) { return d.print(os); }
+class Rigged_Deck : public Deck{
+
+	int cheating_amount;
+	int val;
+
+public:
+	Rigged_Deck(int amount, int val) : Deck{}, cheating_amount(1+amount%3), val(val){}
+
+	void change(int idx){
+		
+		if(!deck[idx])
+		{
+			cerr << "Invalid index..." << endl;
+			return;
+		}
+			
+		if(!(*deck[idx] <= 5))
+		{
+			for(int i=1; i<6; i++)
+			{
+				int r = rand()%41;
+
+				while(!deck[r]) //mi assicuro che la carta esista
+					r = rand()%41;
+
+				Card* tmp = deck[idx+i];
+				deck[idx+i] = deck[r];
+				deck[r] = tmp;
+
+			}
+		}
+
+		return;
+	}
+
+	int play(){
+		
+		Deck::shuffle();
+		
+		int random = 1 + rand()%(10 + cheating_amount);
+
+		if(random > 10)
+			return this->val;
+		return random;
+	}
+
+	ostream& print (ostream& os){
+		Deck::print(os);
+		return os << "\nplay()= " << play();
+	}
+};
+
+class Loyal_Deck : public Deck{
+
+	int rate;
+
+public:
+	Loyal_Deck() : Deck{}{}
+
+	int play(){
+		
+		//Deck::shuffle();
+
+		Card* temp = getTop();
+		remove(0);
+
+		if(*temp <= *deck[1])
+		{
+			if(deck[3])
+				Deck::changes(20);
+
+			int n_carte = 0;
+			for(int i=0; i<size; i++)
+			{
+				if(deck[i])
+					n_carte ++;
+			}
+			return n_carte;
+		}
+		rate++;
+		return 0;
+	}
+
+	ostream& print (ostream& os){
+		return Deck::print(os);
+		return os << "\nplay()= " << play() << ", rate= " << rate;
+	}
+};
+
+ostream& operator<<(ostream &os, Deck &d) { return d.print(os); }
 
 int main()
 {
-
 	srand(111222333);
 
-	Deck mazzo;
-
-	mazzo.shuffle();
-	cout << mazzo << endl;
-
-	Card **eliminate{mazzo.changes(4)};
-	cout << "Carte eliminate: " << endl;
-	for (int i = 0; i < 10; i++)
-	{
-		if (eliminate)
-			cout << "\t" << *eliminate[i] << endl;
-	}
+	Loyal_Deck ld{};
+	ld.remove(0);
+	cout << *ld[0] << endl;
 
 }
