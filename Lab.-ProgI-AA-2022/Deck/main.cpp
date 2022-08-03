@@ -80,34 +80,40 @@ public:
 		for (int i = 30; i < 40; i++)
 			deck[i] = new Card(++pos, "Spade");
 	}
-
+	
 	Card **changes(int idx)
 	{
-//		if(!deck[idx] || !getTop())
-//			return nullptr;
-
 		// Pone in cima la carta
 		Card *tmp = getTop();
 		getTop() = deck[idx];
 		deck[idx] = tmp;
 
-		cout << "Entra se " << *getTop()  << " e' <= di " << *deck[idx] << endl;
 		if (*getTop() <= *deck[idx])
 		{
 			Card **toreturn = new Card *[10]; // No allocazione statica(deve essere restituito)
-			string toremove = (string)(getTop()->getSuit());
+			string toremove = (string)(deck[0]->getSuit());
 
 			int pos = 0;
-			cout << "Changes: " << endl;
+			int support[10]; //Conservo gli indici delle carte da rimuovere dal mazzo
+			int counter = 0;
+
 			for(int i=0; i<size; i++)
 			{
-				if ((string)(deck[0]->getSuit()) == toremove)
-				{	
-					toreturn[pos++] = new Card(*getTop());
-					this->remove(0);
-
-					cout << *toreturn[pos-1] << endl;
+				if(deck[i])
+				{
+					if ((string)(deck[i]->getSuit()) == toremove)
+					{	
+						toreturn[pos++] = new Card(*deck[i]);
+						support[counter++] = i;
+					}
 				}
+			}
+
+			int n = 0;
+			for(int i=0; i<counter; i++)
+			{			
+				this->remove(support[i]-n);
+				n++;
 			}
 
 			return toreturn;
@@ -169,7 +175,7 @@ public:
 				os << "\t" << i+1 << ") " << *deck[i] << endl;
 		}
 
-		return os << "\nNumero carte: " << this->getAmount();
+		return os << "\ngetAmount(): " << this->getAmount();
 	}
 
 	Card*& operator[](int idx){return deck[idx];}
@@ -222,7 +228,7 @@ public:
 	}
 
 	ostream& print (ostream& os){
-		return Deck::print(os);
+		return Deck::print(os) << ", val= " << val << ", cheating_amount= " << cheating_amount;
 	}
 };
 
@@ -253,11 +259,10 @@ public:
 
 	int combine(){
 
-		//Deck::shuffle();
+		Deck::shuffle();
 		int n = getAmount();
 
-		//Card** vet{changes(getAmount()-1)};
-		Card** vet{changes(4)};
+		Card** vet{changes(getAmount()-1)};
 
 		n -= getAmount(); //numero di carte tolte(non rimaste)
 
@@ -294,7 +299,7 @@ public:
 
 	ostream& print (ostream& os){
 		Deck::print(os);
-		return os << ", rate= " << rate;
+		return os << ", rate= " << rate << ", handling()= " << (handling() ? "true" : "false");
 	}
 };
 
@@ -302,12 +307,85 @@ ostream& operator<<(ostream &os, Deck &d) { return d.print(os); }
 
 int main()
 {
+	const int DIM = 8;
+
+	Deck* vett[DIM];
+
 	srand(111222333);
 
-	Loyal_Deck ld{};
-	ld.shuffle();
-	cout << ld << endl;
-	cout << "Somma: \n" << ld.combine() << endl;
-	cout << ld << endl;
+	for(int i=0; i<DIM; i++)
+	{
+		int amount = 3+rand()%40;
+		int val = 5+rand()%10;
 
+		switch(rand()%2)
+		{
+			case 0: 
+				vett[i]= new Rigged_Deck(amount, val);
+				static_cast<Rigged_Deck*>(vett[i])->change(4+rand() % DIM);
+				break;
+
+			case 1:
+				vett[i]= new Loyal_Deck;
+				break;
+		}
+	}
+
+	for(int i=0; i<DIM; i++)
+		vett[i]->shuffle();
+
+	//Punto 1:
+	for(int i=0; i<DIM; i++)
+	{
+		cout << "\nMazzo n°" << i+1 << " :" << *vett[i] << endl;
+	}
+
+	//Punto 2:
+	double avg = 0.0;
+	int count = 0;
+
+	for(int i=0; i<DIM; i++)
+	{
+		if(typeid(*vett[i]) == typeid(Rigged_Deck))
+		{
+			avg += static_cast<Rigged_Deck*>(vett[i])->play();
+			count++;
+		}
+	}
+
+	cout << "\nMean Rigged_deck's play()= " << (double)avg/count << endl;
+
+	//Reset delle variabili
+	avg = 0.0;
+	count = 0;
+
+	for(int i=0; i<DIM; i++)
+	{
+		if(typeid(*vett[i]) == typeid(Loyal_Deck))
+		{
+			avg += static_cast<Loyal_Deck*>(vett[i])->combine();
+			count ++;
+		}
+	}
+
+	cout << "\nMean Loyal_deck's combine()= " << (double)avg/count << endl;
+
+	//Punto 3:
+	
+	//Istanza Rigged_deck
+	cout << "\n(vett[0])[10]= " << *(*vett[0])[10] << endl;
+	(*vett[0])[10] = vett[0]->getTop(); //assegnamento
+	cout << *(*vett[0])[10] << endl;
+
+	static_cast<Rigged_Deck*>(vett[0])->change(4);
+
+	//Istanza Loyal_deck
+	cout << "\n(vett[1])[8]= " << *(*vett[1])[8] << endl;
+	(*vett[1])[8] = vett[1]->getTop(); //assegnamento
+	cout << *(*vett[1])[8] << endl;
+
+	cout << "vett[2]->play()= " << vett[2]->play() << endl;
+
+	cout << endl;
+	
 }
