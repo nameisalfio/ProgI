@@ -1,35 +1,16 @@
 Teorema di BOHM-JACOPINI :
 ---------------------
 Qualunque algoritmo può essere realizzato utilizzando le sole tre strutture di controllo fondamentali: 
-la sequenza, la selezione ed il ciclo
-
-ALLOCAZIONE DELLA MEMORIA:
---------------------------
-Scegliere come allocare la memoria per una variabile dipende dal tipo di problema che si deve risolvere.
-Vi sono vari tipi di allocazione per collocare variabili in diversi segmenti di memoria:
-
--Allocazione STATICA:
-La quantità di memoria da allocare è determinata e fissata a tempo di compilazione. Una variabile allocata 
-staticamente viene collocata nello stack. La memoria allocata staticamente viene liberata quando termina il 
-ciclo di vita della variabile, ciò rende impossibile ad una funzione, per esempio, il ritorno di un vettore 
-allocato staticamente al suo interno.
-
--Allocazione DINAMICA:
-Permette di definire variabili che possono essere create o accresciute in fase di esecuzione. Una variabile 
-allocata dinamicamente viene collocata nello heap(free store). La memoria occupata allocando dinamicamente non
-viene restituita quando termina il ciclo di vita delle variabili che invece permangono nella RAM. Si alza il 
-rischio di memory leak, quindi è buona norma deallocare manualmente la memoria precedentemente occupata. 
-Questo tipo di allocazione si rende necessaria per il ritorno di vettori da parte di una funzione.
+-la sequenza(serie di istruzioni da eseguire in ordine)
+-la selezione(scelta binaria)
+-il ciclo(loop nel quale vengono ripetute istruzioni)
 
 ARRAY:
 ----------------------
-Sequenza di locazioni di memoria riservata ad una serie di dati dello stesso tipo. Gli oggetti si chiamano 
-elementi dell'array e si numerano consecutivamente con espressioni intere che assumono valori da 0 a n-1 (con 
-n=dimensione dell'array) e possiamo accedere all'i-esimo elemento di un vettore 'vet' con la sintassi vet[i-1];
+Sequenza di locazioni di memoria riservata ad una serie di dati dello stesso tipo. Gli elementi si numerano consecutivamente con espressioni intere che assumono valori da 0 a n-1 (con n=dimensione dell'array) e possiamo accedere all'i-esimo elemento di un vettore 'vet' con la sintassi vet[i-1];
 Questi numeri si dicono indici dell’array, ed il loro ruolo è quello di localizzare la posizione di ogni 
-elemento dentro l’array, fornendo acceso diretto ad esso.
+elemento dentro l’array, fornendo acceso diretto ad esso. Il nome del vettore è l'indirizzo in memoria del primo elemento(il suo puntatore) e si può usare l'aritmetica dei puntatori per accedere agli altri elementi sfruttando il nome del vettore e sommando un'espressione intera per ottenere il puntatore ad un altro elemento dell'array.
 Il tipo di elementi immagazzinati nell'array può essere sia built-in che un tipo user-defined.
-Il nome del vettore è l'indirizzo in memoria del primo elemento(il suo puntatore).
 
 PUNTATORI E REFERENCE:
 -----------------------
@@ -37,11 +18,12 @@ Sia i puntatori che i riferimenti possono essere usati per riferirsi agli oggett
 essenzialmente gli indirizzi di memoria come valori. Il differenza fondamentale tra un puntatore e un 
 riferimento è quello un puntatore è una variabile che memorizza l'indirizzo della posizione di memoria di 
 un'altra variabile mentre un reference è una variabile che fa riferimento a un'altra variabile(alias). 
-I due meccanismi, il pointer e riferimento, hanno sintassi e utilizzo diversi.
+I due meccanismi, il pointer e reference, hanno sintassi e utilizzo diversi.
+
 -Sia puntatori che reference sono stati concepiti per limitare l'overhead (risorse accessorie, ma necessarie, 
  per ottenere un determinato scopo)
 
--Un puntatore può essere nullo, nel senso che non mantiene l'indirizzo di alcuna variabile o portebbe non 
+-Un puntatore può essere nullo, nel senso che non mantiene l'indirizzo di alcuna variabile o potrebbe non
  essere inizializzato
 -Un reference deve essere inizializzato contestualmente alla sua dichiarazione
 
@@ -52,18 +34,39 @@ I due meccanismi, il pointer e riferimento, hanno sintassi e utilizzo diversi.
 -La sintassi per un reference è molto più intuitiva
 
 -Per la creazione di una collezione di oggetti vengono utilizzati i puntatori e non è possibile sostituirli 
- con i  puntatori
+ con i  reference
 
 -Passaggio di parametri per riferimento permette di passare l'indirizzo di una variabile e quindi ne modifica 
  lo stato
 
 -Puntatori utilizzati per allocazioni dinamiche della memoria(heap o free store).
 
+ALLOCAZIONE DELLA MEMORIA:
+--------------------------
+Scegliere come allocare la memoria per una variabile dipende dal tipo di problema che si deve risolvere.
+Vi sono vari tipi di allocazione per collocare variabili in diversi segmenti di memoria:
+
+-Allocazione STATICA:
+----------------------
+La quantità di memoria da allocare è determinata e fissata a tempo di compilazione(compile time). Una variabile allocata staticamente viene collocata nello stack. La memoria allocata staticamente viene liberata quando termina il ciclo di vita della variabile, ciò rende impossibile ad una funzione, per esempio, il ritorno di un vettore allocato staticamente al suo interno.
+
+-Allocazione DINAMICA:
+----------------------
+Permette di definire variabili che possono essere create o accresciute in fase di esecuzione(run time).
+Una variabile allocata dinamicamente viene collocata nello heap(free store). La memoria occupata allocando dinamicamente NON viene restituita quando termina il ciclo di vita delle variabili che invece permangono nella RAM. Si alza il rischio di memory leak (consumo non voluto di memoria dovuto alla mancata deallocazione dalla memoria), quindi è buona norma deallocare manualmente la memoria precedentemente occupata. Questo tipo di allocazione si rende necessaria per il ritorno di vettori da parte di una funzione.
+
+-Variabili AUTOMATICHE:
+Le variabili automatiche sono variabili locali in un blocco di istruzioni. Esse sono automaticamente allocate sullo stack quando si entra in quel blocco di codice e parallelamente, vengono distrutte quando si esce dal blocco stesso.
+
+-Variabili GLOBALI:
+Una variabile globale viene inizializzata contestualmente alla propria dichiarazione (a zero se non si specifica), ha uno scope esteso a tutto il programma dal punto in cui viene dichiarata.
+Una variabile locale dichiarata "static" diventa a tutti gli effetti una variabile globale (per lo scope e perchè viene inizializzata  una sola volta)
+
 CONST 
 -------
 Per rendere un riferimento di sola letture (renderlo read-only) si usa la keyword const. Nel caso di un 
 oggetto referenziato da un read-only reference, esso non potrà invocare metodi che ne modificano lo 
-stato interno.Per comunicare al compilatore che il metodo è di sola lettura si aggiunge "const" dopo
+stato interno, mentre per comunicare al compilatore che un metodo è di sola lettura si aggiunge "const" dopo
 la lista di parametri. Utile l'utilizzo nei metodi getter(aumenta la sicurezza del codice).
 
 STATIC
@@ -75,14 +78,10 @@ classe sono invece condivise tra tutte le istanze di una data classe.
 Non è possibile inizializzare un attributo di classe ma l’inizializzazione è comunque obbligatoria e va 
 fatta “fuori” dalla definizione della classe.
 
-Variabile locale:
-Una variabile locale static definita all’interno di una funzione o un metodo, viene dichiarata e inizializzata
-solo la prima volta che il metodo viene invocato e utilizzata nelle successive invocazioni.
-
 Metodi Static
 I metodi static sono dei metodi il cui funzionamento non dipende dallo stato dell’istanza. Se un metodo non 
 dipende dallo stato, ma solo da una variabile static, quindi può essere definito come static.
-Dato che l’esecuzione di un metodo statico non dipende da una specifica istanza, posso anche richiamare un 
+Dato che l’esecuzione di un metodo statico non dipende da una specifica istanza, posso anche richiamare un
 metodo statico anche in maniera indipendente da una istanza (es. Classe::getCount(); )
 
 FRIEND
@@ -145,42 +144,33 @@ nascoste all'esterno e accessibili solo ai membri della classe stessa.
 
 Ereditarietà :
 ---------------------
-Meccanismo che consente livelli di astrazione gerarchici che consentono di conservare le proprietà della classe base 
-nelle classi derivate.
+Meccanismo che consente livelli di astrazione gerarchici che consentono di conservare le proprietà della classe base nelle classi derivate.
 
 Polimorfismo
 ---------------------
-Possibilità di presentarsi sotto diverse forme. In questo contesto il polimorfismo rappresenta uno dei 4 principi
-cardine della OOP e si manifesta quando in una gerarchia ereditaria vi sono ridefinizioni dello stesso metodo
-(stessa firma) che ha un comportamento diverso a seconda dell'oggetto chiamante(OVERRIDING). Questo favorisce il 
-riutilizzo del codice
+Possibilità di presentarsi sotto diverse forme. In questo contesto il polimorfismo rappresenta uno dei 4 principi cardine della OOP e si manifesta quando in una gerarchia ereditaria vi sono ridefinizioni dello stesso metodo (stessa firma) che ha un comportamento diverso a seconda dell'oggetto chiamante(OVERRIDING). Questo favorisce il riutilizzo del codice
 
- POLIMORFISMO STATICO
+POLIMORFISMO STATICO
  
 Quando un puntare/reference di tipo di classe base punta o diventa alias di un oggetto di classe 
 derivata(conformità di tipo).
 Si verifica lo static binding, ovvero il riconoscimento di tipo anticipato rispetto al momento dell'esecuzione.
 Il compilatore cerca il metodo invocato su un oggetto del tipo che si trova d'avanti.
 
- POLIMORFISMO DINAMICO
+POLIMORFISMO DINAMICO
 
 Il "vero" polimorfismo, nella pienezza del suo significato "filosofico", deve essere associato al"late binding":
 la differenziazione di comportamento degli oggetti in risposta allo stesso messaggio non deve essere statica e 
 predefinita, ma dinamica, cioè deve essere determinata dal contesto del programma in fase di esecuzione. 
-Vedremo che ciò é realizzabile solo nell'ambito di una stessa famiglia di classi, e quindi il "vero" polimorfismo NON
-può prescindere dall'eredità e si applica a funzioni-membro, con lo stesso nome e gli stessi argomenti, che 
-appartengono sia alla classe base che alle sue derivate.
-Per ottenere il polimorfismo dinamico si utilizza la keyword "virtual" per etichettare il metodo della classe madre
-che non verrà mai realmente invocato e si indica nei metodi delle classi figlie che sono "override".
+Vedremo che ciò é realizzabile solo nell'ambito di una stessa famiglia di classi, e quindi il "vero" polimorfismo NON può prescindere dall'eredità e si applica a funzioni-membro, con lo stesso nome e gli stessi argomenti, che appartengono sia alla classe base che alle sue derivate.
+Per ottenere il polimorfismo dinamico si utilizza la keyword "virtual" per etichettare il metodo della classe madre che non verrà mai realmente invocato e si indica nei metodi delle classi figlie che sono "override".
 
-L'applicazione della parola chiave virtual ai metodi di una classe consente di condizionare l'esecuzione del codice 
-secondo il tipo dell'istanza oggetto cui si fa riferimento.
+L'applicazione della parola chiave virtual ai metodi di una classe consente di condizionare l'esecuzione del codice secondo il tipo dell'istanza oggetto cui si fa riferimento.
 Se le funzioni della interfaccia sono dichiarate VIRTUAL, si ottiene il polimorfismo a run-time.
-Il costruttore non è mai virtual mentre per favorire una riduzione del memory leak (consumo non voluto di memoria dovuto alla mancata deallocazione dalla memoria) è utile spesso dichiarare il distruttore come virtual.
+Il costruttore non è mai virtual mentre per favorire una riduzione del memory leak  è utile spesso dichiarare il distruttore come virtual.
 
 Overriding + virtual = Polimorfimo dinamico (a tempo di esecuzione).
-• In presenza di puntatori e/o reference, al compilatore non sarà noto il tipo di oggetto referenziato.
-l polimorfismo a tempo di esecuzione avviene mediante puntatori e/o reference
+• Il polimorfismo a tempo di esecuzione avviene mediante puntatori e/o reference, in presenza dei quali, al compilatore non sarà noto il tipo di oggetto referenziato.
 
 FUNZIONE VIRTUALE PURA
 ---------------------
@@ -204,9 +194,8 @@ In un interfaccia nessun comportamento è definito, ma semplicemente dichiarato 
 
 RTTI
 ---------------------
-La RTTI (RunTime Type Information o RunTime Type Identification) consente ai programmi che manipolano puntatori e 
-riferimenti ad oggetti di una classe base, di determinare il tipo dell'oggetto durante l'esecuzione invece che solo
-al momento della compilazione.
+La RTTI (RunTime Type Information o RunTime Type Identification) consente ai programmi che manipolano puntatori e riferimenti ad oggetti di una classe base, di determinare il tipo dell'oggetto durante l'esecuzione invece che solo al momento della compilazione. Per invocare un metodo su un'istanza il cui tipo verrà determinato a
+run time si possono utilizzare due strategie:
 
 1) DYNAMIC CAST + CONTROLLO dell'esistenza del puntatore per capire se il cast è avvenuto con successo
 2) TYPEID() + STATIC CAST

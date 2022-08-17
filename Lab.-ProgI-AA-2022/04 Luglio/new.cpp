@@ -161,8 +161,8 @@ int main(){
     double max = static_cast<Dice*>(vec1[0])->getDoubleRate();
     for(int i=0; i<DIM; i++)
     {
-    	if(static_cast<Dice*>(vec1[0])->getDoubleRate() > max)
-    		max = static_cast<Dice*>(vec1[0])->getDoubleRate();
+    	if(static_cast<Dice*>(vec1[i])->getDoubleRate() > max)
+    		max = static_cast<Dice*>(vec1[i])->getDoubleRate();
     }
     cout << "\nMax: " << max << endl;
 

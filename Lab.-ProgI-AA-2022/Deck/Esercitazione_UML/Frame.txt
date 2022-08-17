@@ -1,0 +1,22 @@
+srand(111222333);
+
+for(int i=0; i<DIM; i++)
+{
+	int amount = 3+rand()%40;
+	int val = 5+rand()%10;
+
+	switch(rand()%2)
+	{
+		case 0: 
+			vett[i]= new Rigged_Deck(amount, val);
+			static_cast<Rigged_Deck*>(vett[i])->change(4+rand() % DIM);
+			break;
+
+		case 1:
+			vett[i]= new Loyal_Deck;
+			break;
+	}
+}
+
+for(int i=0; i<DIM; i++)
+	vett[i]->shuffle();

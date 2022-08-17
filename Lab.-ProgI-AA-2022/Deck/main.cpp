@@ -7,7 +7,6 @@ using namespace std;
 
 class Card
 {
-
 	int val; // valore
 	char *card_suit; // seme
 
@@ -18,7 +17,7 @@ public:
 		bool not_avaible = true;
 		string avaibles[4]{"Denari", "Coppe", "Bastoni", "Spade"};
 
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i <= 4; i++)
 		{
 			if (init == avaibles[i])
 			{
@@ -93,9 +92,9 @@ public:
 			Card **toreturn = new Card *[10]; // No allocazione statica(deve essere restituito)
 			string toremove = (string)(deck[0]->getSuit());
 
-			int pos = 0;
 			int support[10]; //Conservo gli indici delle carte da rimuovere dal mazzo
 			int counter = 0;
+			int pos = 0;
 
 			for(int i=0; i<size; i++)
 			{
@@ -129,7 +128,7 @@ public:
 
 		for (int i = 0; i < getAmount(); i++)
 		{	
-			int r = rand() % 41;
+			int r = rand() % getAmount();
 			
 			temp[i] = deck[i];
 			deck[i] = deck[r];
@@ -187,7 +186,7 @@ class Rigged_Deck : public Deck{
 	int val;
 
 public:
-	Rigged_Deck(int amount, int val) : Deck{}, cheating_amount(1+amount%3), val(val){}
+	Rigged_Deck(int amount, int val) : Deck{}, cheating_amount(amount%3), val(val){}
 
 	void change(int idx){
 		
@@ -201,10 +200,10 @@ public:
 		{
 			for(int i=1; i<6; i++)
 			{
-				int r = rand()%41;
+				int r = rand()%getAmount();
 
 				while(!deck[r]) //mi assicuro che la carta esista
-					r = rand()%41;
+					r = rand()%getAmount();
 
 				Card* tmp = deck[idx+i];
 				deck[idx+i] = deck[r];
@@ -371,20 +370,24 @@ int main()
 	cout << "\nMean Loyal_deck's combine()= " << (double)avg/count << endl;
 
 	//Punto 3:
+	cout << "\nAssegnamenti: " << endl;
+	cout << "------------------------" << endl;
 	
-	//Istanza Rigged_deck
-	cout << "\n(vett[0])[10]= " << *(*vett[0])[10] << endl;
-	(*vett[0])[10] = vett[0]->getTop(); //assegnamento
-	cout << *(*vett[0])[10] << endl;
+	cout << "\nIstanza Rigged_deck: " << endl;
+	cout << "\tPrima (vett[0])[12]= " << *(*vett[0])[12] << endl;
+	(*vett[0])[12] = vett[0]->getTop(); //assegnamento
+	cout << "\tAssegno il " << *vett[0]->getTop() << endl;
+	cout << "\tDopo (vett[0])[12]= " << *(*vett[0])[12] << endl;
 
 	static_cast<Rigged_Deck*>(vett[0])->change(4);
 
-	//Istanza Loyal_deck
-	cout << "\n(vett[1])[8]= " << *(*vett[1])[8] << endl;
-	(*vett[1])[8] = vett[1]->getTop(); //assegnamento
-	cout << *(*vett[1])[8] << endl;
+	cout << "\nIstanza Loyal_deck: " << endl;
+	cout << "\tPrima (vett[7])[4]= " << *(*vett[7])[4] << endl;
+	(*vett[7])[4] = vett[7]->getTop(); //assegnamento
+	cout << "\tAssegno il " << *vett[7]->getTop() << endl;
+	cout << "\tDopo (vett[7])[4]= " << *(*vett[7])[4] << endl;
 
-	cout << "vett[2]->play()= " << vett[2]->play() << endl;
+	cout << "\nvett[7]->play()= " << vett[7]->play() << endl;
 
 	cout << endl;
 	
