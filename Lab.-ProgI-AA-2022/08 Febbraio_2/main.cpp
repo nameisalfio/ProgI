@@ -35,7 +35,7 @@ public:
 
 		if(mat[i][j])
 			return mat[i][j];
-		else                    //RAMO ELSE INUTILE
+		else                    
 			return nullptr;
 	}
 
@@ -176,7 +176,7 @@ public:
 		}
 
 		return count;
-	}
+	}	
 
 	ostream& print(ostream& os){
 		AbstractRandomMat :: print(os);
