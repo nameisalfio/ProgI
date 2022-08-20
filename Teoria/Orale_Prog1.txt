@@ -46,6 +46,8 @@ ALLOCAZIONE DELLA MEMORIA:
 Scegliere come allocare la memoria per una variabile dipende dal tipo di problema che si deve risolvere.
 Vi sono vari tipi di allocazione per collocare variabili in diversi segmenti di memoria:
 
+https://www.youtube.com/watch?v=m9cm5MpP9nA&list=PL83Ordjpzm5oUl7tFEjc4iirkPBiv7FxR&index=14
+
 -Allocazione STATICA:
 ----------------------
 La quantità di memoria da allocare è determinata e fissata a tempo di compilazione(compile time). Una variabile allocata staticamente viene collocata nello stack. La memoria allocata staticamente viene liberata quando termina il ciclo di vita della variabile, ciò rende impossibile ad una funzione, per esempio, il ritorno di un vettore allocato staticamente al suo interno.
@@ -54,6 +56,9 @@ La quantità di memoria da allocare è determinata e fissata a tempo di compilaz
 ----------------------
 Permette di definire variabili che possono essere create o accresciute in fase di esecuzione(run time).
 Una variabile allocata dinamicamente viene collocata nello heap(free store). La memoria occupata allocando dinamicamente NON viene restituita quando termina il ciclo di vita delle variabili che invece permangono nella RAM. Si alza il rischio di memory leak (consumo non voluto di memoria dovuto alla mancata deallocazione dalla memoria), quindi è buona norma deallocare manualmente la memoria precedentemente occupata. Questo tipo di allocazione si rende necessaria per il ritorno di vettori da parte di una funzione.
+NB. La deallocazione di una variabile indica al compilatore che quella porzione di memoria diventa
+    utilizzabile e che quindi può essere sovrascritta, ma il suo contenuto non viene immediatamente
+    cancellato.
 
 -Variabili AUTOMATICHE:
 Le variabili automatiche sono variabili locali in un blocco di istruzioni. Esse sono automaticamente allocate sullo stack quando si entra in quel blocco di codice e parallelamente, vengono distrutte quando si esce dal blocco stesso.
