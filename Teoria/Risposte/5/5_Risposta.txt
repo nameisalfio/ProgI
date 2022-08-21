@@ -1,0 +1,28 @@
+5)Domanda:
+
+    Si introducano le basi della programmazione strutturata, indicando le principali strutture di controllo in C++. Si facciano degli esempi.
+
+Risposta:
+
+    Secondo il Teorema di BOHM-JACOPINI :
+
+    Qualunque algoritmo può essere realizzato utilizzando le sole tre strutture di controllo fondamentali:
+
+- Sequenza : le istruzioni sono eseguite secondo l’ordine in cui sono scritte;
+             Possono essere di tre tipi: lettura, scrittura, assegnazione;
+
+- Selezione o Condizione : esiste una condizione da valutare e due possibili gruppi di istruzioni da eseguire;
+                           in funzione del valore della condizione si sceglie un blocco oppure l’altro;
+
+- Iterazione : consente la ripetizione di un blocco di istruzioni, per un certo numero di volte, definito a seconda
+               dell’obiettivo da raggiungere;
+
+    es.
+
+   Selezione -->  Generalmente  in tutti i linguaggi di programmazione si utilizza la keyword "if(condizione)" e se la
+                  valutazione della condizione da esito true si eseguono le istruzioninel blocco if, mentre se dovesse dare esito false verranno eseguite le istruzioni nel rispettivo ramo "else".
+
+   Iterazione --> Quando si vuole iterare un blocco di istruzioni per un numero prestabilito di volte si utilizza
+                  generalmente un ciclo for.
+                  Quando non si conosce a priori il numero di iterazioni da fare si procede generalmente con un ciclo
+                  while o do while(), la differenza tra i due è il momento di valutazione della condizione, infatti il primo controlla prima di eseguire mentre il secondo esegue sempre almeno una volta e poi controlla.
