@@ -34,6 +34,7 @@ Risposta:
 
     - Variabili globali: dichiarate fuori da una funzione.
                          Visibilità estesa all'intera durata del programma dalla dichiarazione. Una variabile locale con lo stesso nome sovrascrive in automatico quella globale, che rimarrà in vita ma non sarà più visibile in quel blocco di codice.
+                         Una variabile locale dichiarata "static" diventa a tutti gli effetti una variabile globale
 
     Esempio in C++:
 
