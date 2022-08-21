@@ -9,19 +9,24 @@ Risposta:
     Scegliere come allocare la memoria per una variabile dipende dal problema che si sta
     affrontando. Esistono diversi diversi segmenti di memoria:
 
-    Uno di questi è lo STACK. Esso è una regione di memoria riservata a ciascun programma in esecuzione che opera in modo LIFO.
-    Infatti quando il programma avvia l’esecuzione di una funzione, quest’ultima riceve il suo stack frame, in cui vengono memorizzati VARIABILI LOCALI(allocate automaticamente) e INDIRIZZI DI RITORNO delle chiamate di funzione. Una volta che una funzione ne chiama un’altra, viene creato un nuovo stack frame. Quando termina il frame dello stack più recente, esso verrà liberato e si restituisce il controllo al chiamante.
-    Alle variabili allocate nello stack frame delle funzioni viene riservata una quantità di memoria prefissata a compile-time e il loro scope coincide con quello della funzione, o blocco di codice, in cui si trovano.
+1)
+    Uno di questi è lo STACK. Esso è una regione di memoria riservata a ciascuna funzione in esecuzione e che opera in modo LIFO(last in first out).
+    Quando il programma avvia l’esecuzione di una funzione, quest’ultima riceve il suo stack frame, in cui vengono memorizzati VARIABILI LOCALI(allocate automaticamente) e INDIRIZZI DI RITORNO delle chiamate di funzione.
+    Quando una funzione ne chiama un’altra, viene creato un nuovo stack frame e quando termina lo stack frame più recente, la porzione di memoria che occupava verrà liberato e si restituisce il controllo al chiamante.
+    Alle variabili allocate nello stack delle funzioni viene riservata una quantità di memoria prefissata a compile-time e il loro tempo di vita coincide con quello del blocco di codice in cui si trovano.
 
-    Esiste invece una regione di memoria denominata HEAP (free store), in cui possono essere archiviati oggetti creati o accresciuti a run-time. La memoria occupata allocando dinamicamente NON viene restituita quando termina il blocco di codice contenente le variabili che invece permangono nella RAM.
-    Si alza il rischio di memory leak (consumo non voluto di memoria dovuto alla mancata deallocazione dalla memoria), quindi è buona norma deallocare manualmente la memoria precedentemente occupata.
+2)
+    Esiste invece una regione di memoria denominata HEAP (free store), in cui possono essere allocati oggetti creati o accresciuti a run-time. La memoria occupata allocando dinamicamente NON viene restituita quando termina il blocco di codice contenente le variabili che invece permangono nella RAM.
+    Si alza il rischio di memory leak (consumo non voluto di risorse dovuto alla mancata deallocazione dalla memoria), quindi è buona norma deallocare manualmente la memoria precedentemente occupata.
     Questo tipo di allocazione si rende necessaria per la restituzione di vettori da parte
     di una funzione.
 
-    Nel segmento DATA risiedono invece le variabili allocate staticamente.
+3)
+    Nel segmento DATA risiedono invece le variabili allocate staticamente(es. var globali).
     Una variabile statica viene inizializzata contestualmente alla propria dichiarazione e
     ha uno scope esteso a tutto il programma dal punto in cui viene dichiarata.
     Una variabile locale dichiarata "static" diventa a tutti gli effetti una variabile globale (per lo scope e perchè viene inizializzata  una sola volta)
+
 
     Esempio in C++:
 
