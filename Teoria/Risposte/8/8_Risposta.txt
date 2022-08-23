@@ -1,1 +1,5 @@
+8)Domanda:
+
+    Si introducano i puntatori in C++, indicandone la sintassi e discutendone i principali vantaggi rispetto alle variabili non puntatore. Si introducano le reference e si discutano le similarità e differenze tra puntatori e reference. Si facciano degli esempi in C++ indicando con dei diagrammi in che modo viene modificata la memoria. Si discuta dei diversi usi della parola “const” nell’istanziazione di una variabile puntatore.
+
 https://www.youtube.com/watch?v=RSrVvjisvtE&list=PL83Ordjpzm5oUl7tFEjc4iirkPBiv7FxR&index=20
