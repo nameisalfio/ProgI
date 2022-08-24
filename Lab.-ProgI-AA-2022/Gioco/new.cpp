@@ -65,22 +65,19 @@ class Character{
 
 		virtual double attack()=0;
 
-		virtual ostream& print(ostream& os){
+		ostream& print(ostream& os){
 
-			os << "Class: " << typeid(*this).name() << endl << endl;
-
-			for(int i=0; i<rows; i++)
-			{
-				for(int j=0; j<columns; j++)
-				{
-					if(power[i][j])
-						os << *power[i][j] << "  ";
-				}
-				os << endl;
+		os << "Class: " << typeid(*this).name() << ", rows= " << rows << ", columns= " << columns << endl;
+		os << "\nPower:" << endl << endl;
+		for(int i=0; i<rows; i++){
+			for(int j=0; j<columns; j++){
+				if(power[i][j])
+					os << *power[i][j] << " ";
 			}
-
-			return os << endl; 
+			os << endl;
 		}
+		return os << "------------------------------------" << endl;
+	}
 };
 
 template<typename T>
@@ -100,7 +97,7 @@ class Wizard : public Character<T>{
 			}
 
 			T somma = 0.0;
-			T** cols = this->get_columns(r % this->columns);
+			T** cols = this->get_columns(rand() % this->columns);
 			for(int i=0; i<this->rows; i++)
 			{
 				if(cols[i])
@@ -110,10 +107,6 @@ class Wizard : public Character<T>{
 			return (r % 6) + (T)somma;
 		}
 
-		ostream& print(ostream& os)override{
-			Character<T>::print(os);
-			return os << "\nAttack()= " << this->attack() << endl;
-		}
 };
 
 template<typename T>
@@ -124,7 +117,7 @@ class Cleric : public Character<T>{
 
 		double attack()override{
 
-			int r = rand()%12 + 1;
+			int r = rand()%6 + 1;
 
 			if(r == 1 || r == 5)
 				return 0;
@@ -145,10 +138,6 @@ class Cleric : public Character<T>{
 				return (double)r/2;
 		}
 
-		ostream& print(ostream& os)override{
-			Character<T>::print(os);
-			return os << "\nAttack()= " << this->attack() << endl;
-		}
 };
 
 template<typename T>
@@ -156,7 +145,6 @@ ostream& operator<< (ostream& os, Character<T>& obj){return obj.print(os);}
 
 int main(){
 
-	cout << endl;
 	const int DIM = 10;
 
 	Character<double>* vett[DIM];
@@ -167,11 +155,43 @@ int main(){
 	{
 		int r = rand()%2;
 		if(r==0)
-			vett[i] = new Wizard<double> (3, 3);
+			vett[i] = new Wizard<double> (2+rand()%4, 3+rand()%3);
 		else
-			vett[i] = new Cleric<double> (5, 5);	
+			vett[i] = new Cleric<double> (3+rand()%3, 2+rand()%4);	
 	}
-		
+	
 	for(int i=0; i<DIM; i++)
 		cout << i+1 << ") " << *vett[i] << endl;
+
+	double max = vett[0]->attack();
+	double min = vett[0]->attack();
+	
+	double sum = 0.0;
+	double avg = 0.0;
+	int count = 0;
+
+
+	for(int i=0; i<DIM; i++)
+	{
+		if(vett[i]->attack() > max)
+			max = vett[i]->attack();
+
+		if(vett[i]->attack() < min)
+			min = vett[i]->attack();
+
+		if(typeid(*vett[i]) == typeid(Wizard<double>))
+			sum += static_cast<Wizard<double>*>(vett[i])->attack();
+
+		if(typeid(*vett[i]) == typeid(Cleric<double>))
+		{
+			avg += static_cast<Cleric<double>*>(vett[i])->attack();
+			count ++;
+		}
+	}
+
+	cout << "\nMax attack(): " << max << endl;
+	cout << "\nMin attack(): " << min << endl;
+	cout << "\nSum Wizard<double>_attack(): " << sum << endl;
+	cout << "\nAvg Cleric<double>_attack(): " << (double)avg/count << endl;
+
 }
