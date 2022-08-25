@@ -51,6 +51,90 @@ Risposta:
 	Il compilatore selezionerà la corretta versione di overloading della funzione sulla base del tipo e del numero di parametri che verranno utilizzati nell'invocazione, effettuando, ove possibile, opportune
 	promozioni e conversioni di tipo.
 
+	Overloading degli operatori:
+
+	L’overloading degli operatori permette di ridefinire la semantica degli operatori disponibili in C++ per tipi user-defined.Quando si fa overload di un operatore, uno dei due operandi è sempre un oggetto. L’overloading degli operatori si effettua infatti per consentire operazioni tra oggetti.
+	Lo scopo dell'overloading di operatori è quello di semplificare la sintassi:
+
+	es. definire una funzione sum che calcoli la somma di due oggetti è ben diverso dalla definizione
+	    dell'operatore binario di somma '+';
+
+	- Overloading operatori non-membro:
+
+	es.		class Point2D {
+				double x, y;
+
+				public:
+					Point2D(double _x, double _y) : x(_x), y(_y) {}
+					friend Point2D operator+(Point2D, Point2D);
+			};
+
+			Point2D operator+(Point2D a, Point2D b){
+				return Point2D(a.x+b.x, a.y+b.y);
+			}
+
+	Si noti che si dichiara friend la funzione che fa l'overloading dell'operatore per dare accesso ai contenuti privati della classe.
+
+	L’operatore può essere anche richiamato esplicitamente così:
+
+		Point2D p3 = operator+(p1,p2);
+
+	- Overloading operatori membro:
+
+	In questo caso, dovremo passare in input solo l’operando di destra nel caso di operatori binari o nessun operando nel caso di operatori unari, in quanto l'operando di sinistra è sempre l'oggetto su cui viene invocato il metodo(collegato al puntatore this).
+
+	es.		class Point2D {
+				double x, y;
+
+				public:
+					Point2D(double _x, double _y) : x(_x), y(_y) {}
+
+					Point2D operator+(Point2D a){	//binario
+						return Point2D(a.x+x, a.y+y);
+					}
+
+					Point2D operator-() {		//unario
+						return Point2D(-x,-y);
+					}
+			};
+
+	Overloading del copy constructor:  si rende necessario nel caso di allocazioni dinamiche per bypassare il meccanismo di copia bitwise stabilito di default dal compilatore
+
+	es.		Matrice3D(const Matrice3D& other){
+				//copia del valore delle strutture dati allocate dinamicamente
+			}
+
+	Tutti gli overloading che ritornano un reference rendono possibile utilizzare il valore di ritorno a sinistra di un assegnamento(come lvalue modificabile).
+
+	es.		Matrice3D<T>& operator= (const Matrice3D<T>& source)const{
+
+				this->memoryManagement(source);
+				return *this;
+			}
+
+	Si possono effettuare overloading anche di operatori speciali (es. << , >>, delete[], ...)
+
+	es.     	friend ostream& operator<< (ostream& os, const Matrice3D<T>& m){
+
+					// inserimenti nell' ostream os...
+
+					return os;
+				}
+
+	Si dichiara friend per dare acceesso alla classe ostream ai contenuti private della classe Matrice3D
+
+	Il sovraccarico di un operatore non deve comunque attribuirgli un significato completamente fuori contesto.
+	Non è possibile effettuare l'overloading di alcuni operatori:
+
+	- risolutore di scope ::
+	- operatore ternario ? :
+	- ecc..
+
+	Non è possibile modificare l'arietà degli operatori:
+
+	- a + b * c
+
+
 -	Funzioni template:
 
 	Per favorire ancora di più la riutilizzabilità del codice C++ mette a disposizione le funzioni template.
