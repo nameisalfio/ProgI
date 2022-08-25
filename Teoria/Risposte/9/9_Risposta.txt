@@ -1,0 +1,105 @@
+9)Domanda:
+
+    Si introducano le stringhe in C++. Si discutano i due tipi di stringhe disponibili e le rispettive differenze. Si facciano degli esempi in C++ di creazione e manipolazione delle stringhe.
+
+Risposta:
+
+    In C++ una stringa può essere definita mediante oggetto string ma anche come array di caratteri(stringhe di C).
+
+        1) char s[] = "stringa";        //stringa di C++
+
+        2) char s[] = {'s', 't', 'r', 'i', 'n', 'g', 'a', '\0'};        //Stringa di C
+
+    Dove '\0' è un carattere di terminazione che serve ad indicare che la stringa è finita. Nella prima notazione il carattere di terminazione viene inserito automaticamente dal compilatore. Se non viene inserito il carattere di terminazione, possono verificarsi problemi con le funzioni che manipolano le stringhe.
+
+    Una stringa di C è un puntatore costante a caratteri
+
+        const char* s = "ciao";     //OK
+
+    NB. Dato che il puntatore è costante(read-only) non è possibile utilizzare istruzioni come
+
+        s[2] = 'z';     //NO!
+
+    Ovviamente una stringa di C non ha a disposizione tutti i metodi previsti per l'oggetto string;
+    Tuttavia è prevista una libreria che è possibile includere tramite l'header file <cstring> per manipolare array di caratteri, similmente ad oggetti string.
+
+    es. Funzione di copia
+
+        char* strcpy (char∗ destination, const char∗ source);   //prototipo
+
+        char name [15];
+        strcpy (name, ”pippo” );    //copia "pippo" in name
+        cout << name;
+
+    es. Funzione di confronto lessicografico
+
+        int strcmp (const char* lhs, const char* rhs);      //prototipo
+
+        strcmp("pippo", "paperino");    //ritorna int > 0
+        strcmp("paperino", "pippo");    //ritorna int < 0
+        strcmp("pippo", "pippo");       //ritorna 0
+
+    es. Funzione si sottostringa
+
+        const char* strstr (const char* str1, const char* str2);    //prototipo
+              char* strstr (char* str1, const char* str2);      //prototipo
+
+        char s[] = "CesareGiulio";
+        char* found = strstr(s, "are");
+        cout << found << endl;      //stampa areGiulio
+
+        La funzione strstr restituisce un puntatore al primo carattere della prima occorrenza trovata in str2
+
+        Cast implicito :
+
+            const char* str = "ciao";    //OK, cast implicito
+
+    Sono poi previste nella libreria <cctype> funzioni che lavorano con singoli caratteri :
+
+    es. #include<cctype>
+
+        cout << isalpha('a') << endl; //restituisce un valore >0 se il carattere è una lettera
+        cout << isalpha('0') << endl << endl; //restituisce 0 se il carattere non è una lettera
+
+        cout << isalnum('a') << endl; //restituisce un valore >0 se il carattere è una lettera o un numero
+        cout << isalnum('0') << endl << endl; //restituisce un valore >0 se il carattere è una lettera o un numero
+
+        cout << isdigit('a') << endl; //restituisce un valore >0 se il carattere è un numero
+        cout << isdigit('0') << endl << endl; //restituisce un valore >0 se il carattere è un numero
+
+        cout << isprint('a') << endl; //restituisce un valore >0 se il carattere è stampabile
+        cout << isprint('\b') << endl << endl; //restituisce un valore >0 se il carattere è stampabile
+
+        cout << ispunct('A') << endl; //restituisce un valore >0 se il carattere è punteggiatura
+        cout << ispunct('.') << endl << endl; //restituisce un valore >0 se il carattere è punteggiatura
+
+        cout << islower('A') << endl; //restituisce un valore >0 se il carattere è minuscolo
+        cout << islower('a') << endl << endl; //restituisce un valore >0 se il carattere è minuscolo
+
+        cout << isupper('A') << endl; //restituisce un valore >0 se il carattere è maiuscolo
+        cout << isupper('a') << endl << endl; //restituisce un valore >0 se il carattere è maiuscolo
+
+        cout << isspace('A') << endl; //restituisce un valore >0 se il carattere è uno spazio
+        cout << isspace(' ') << endl << endl; //restituisce un valore >0 se il carattere è uno spazio
+
+    Le funzioni toupper e tolower permettono di trasformare un carattere minuscolo in maiuscolo e viceversa.
+
+    es. cout << (char) toupper('a') << endl;
+        cout << (char) tolower('A') << endl;
+
+    Gli operatori degli oggetti string sono sovraccaricati in modo da poter confrontare le stringhe in maniera naturale:
+
+    L’operatore di assegnamento = permette di copiare la stringa a destra dell’operatore nella stringa alla sinistra dell’operatore;
+
+    L’operatore + permette di concatenare stringhe;
+
+    Gli operatori di confronto >,<, >=, <=, ==, != permettono di verificare se due stringhe sono uguali, diverse o di capire qual è il loro ordinamento lessicografico
+
+    Si può accedere al carattere di indice i della stringa str con la notazione str[i], al pari di un array.
+
+    E’ possibile passare da un oggetto di tipo string a una c-string mediante il metodo c_str:
+
+    es.     string ss = "Hello World";
+            const char* cs = s.c_str();     //il puntatore deve essere const
+            cout << cs;
+
