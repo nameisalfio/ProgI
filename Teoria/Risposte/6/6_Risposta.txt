@@ -98,7 +98,10 @@ Risposta:
 					}
 			};
 
-	Overloading del copy constructor:  si rende necessario nel caso di allocazioni dinamiche per bypassare il meccanismo di copia bitwise stabilito di default dal compilatore
+	Overloading del copy constructor:  Di default il copy constructor effettua una "Shallow Copy".
+	Questa copia consiste nel copiare tutti i campi valore ma non si effettua la copia dei puntatori contenuti nella classe.
+	L'overloading si rende necessario nel caso di allocazioni dinamiche per bypassare il meccanismo di copia bitwise stabilito
+	di default dal compilatore;
 
 	es.		Matrice3D(const Matrice3D& other){
 				//copia del valore delle strutture dati allocate dinamicamente
