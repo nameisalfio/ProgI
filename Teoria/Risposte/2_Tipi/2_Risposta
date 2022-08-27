@@ -1,0 +1,132 @@
+2)Domanda:
+
+    Si introducano i diversi tipi di dato in C++, discutendone il loro utilizzo (perché
+    sono necessari? Quando è meglio preferirne uno a un altro?) e definendo come
+    essi vengono rappresentati in memoria secondo lo standard IEEE.
+
+Risposta:
+
+    Il C++, come tutti i linguaggi di programmazione, mette a disposizione una serie di tipi di dato built-in (predefiniti) che servono all'utente per rappresentare anche tipi di dato più complessi e non primitivi, si parla infatti di tipi user-defined, quindi definiti dall'utente.
+
+    Tipi built-in:
+
+        - bool  1byte
+        - char  1byte
+        - int   4byte
+        - short  2 byte
+        - long   8byte
+        - unsigned 4byte
+        - float    4byte
+        - double   8byte
+        - ...
+
+    Tipi user-defined:
+
+        - classi
+        - struct
+        - ...
+
+    Bisogna saper scegliere il tipo di dato appropriato per la rappresentazione dell'entità con cui si ha a che fare, per esempio se bisogna esprimere la propria età non ha senso utilizzare una variabile booleana o un double, perchè di certo di rappresenterà un numero intero, anzi sarebbe meglio scomodare  il tipo short, dato che ci consente di risparmiare memoria senza alcuna perdita di informazione.
+
+    Nel calcolatore, i numeri reali sono rapprentati mediante un formato in virgola mobile.
+    Si tratta di una rappresentazione in forma compatta che deriva dalla notazione scientifica.
+
+    Lo standard IEEE-754 definisce così il formato per la rappresentazione dei numeri in virgola mobile:
+
+        1 bit   per il SEGNO(s)
+        8/11 bit    per l'ESPONENTE(E)
+        23/52 bit   per la MANTISSA(M)
+
+    N = (−1)s × 2E × M
+
+    SEGNO:
+    Si attribuisce il -1 al bit più a sinistra della codifica binaria, infatti se il primo bit è a 0
+    il numero è positivo e è 1 il numero rappresentato è negativo.
+
+    ESPONENTE:
+    Si rappresenta a meno di un valore k detto di BIAS
+
+    E = e + k
+
+    Dove 'e' sarebbe il valore dell'esponente ottenuto dalla normalizzazione della mantissa e k è il
+    valore di bias che per la rappresentazione a 32 bit vale +127
+
+    MANTISSA:
+    Si calcola la codifica binaria del numero
+        ad esempio: 113.2510 diventa 1110001.01)
+
+    Si normalizza portando la virgola a destra della prima cifra significativa del numero(sempre 1)
+        ad esempio: 1110001.01 diventa 1.11000101 × 2^6
+
+    Si rappresentano SOLO le cifre a destra della virgola fino al bit meno significativo
+        ad esempio: sarà M = 11000101_000000000000000
+
+    Con 8 bit è possibile rappresentare tutti i valori da -126 a 127
+
+    Esempio:
+
+        113.2510 = 1110001.012 = 1.11000101 × 26
+        Quindi e = 6
+        Allora E = 6 + k = 6 + 127 = 133 = 10100001
+        Infine, il segno: dato che il numero −113.25 è negativo, s=1
+
+        Quindi la codifica a 32 bit floating point IEEE 754 del numero −113.25 è la seguente:
+
+        | 1 | 10100001 | 11000101000000000000000 |
+          s      E                M
+
+    Limiti:
+        #include<climits>
+        ...
+        cout << INT_MIN << endl;
+
+    Altri tipi di dato, invece sono definiti dall'utente per rappresentare e modellare delle entità che normalmente non potrebbero essere rappresentate attraverso l'utilizzo di un tipo primitivo. Si definiscono tipi user-defined, e si "costruiscono" attraverso l'utilizzo delle classi.
+
+    Una classe è un insieme di oggetti che condividono una struttura comune formata da:
+
+    - dati che ne descrivono lo stato interno(attributi);
+    - descrizione di azioni che essi possono compiere(metodi o funzioni membro);
+
+    Le classi definiscono quindi tipi di dato non primitivi, detti user-defined ovvero definiti dall'utente, in funzione del problema da risolvere.Esse possono separare l'interfaccia dall'implementazione in modo che solo il programmatore sarà a conoscenza dei dettagli implementativi mentre l'utilizzatore ne dovrà conoscere dolo l'interfaccia;
+
+    La definizione di una classe si scompone in due parti:
+
+    -Una prima parte in cui vengono descritti i dati e l'interfaccia dell'oggetto, realizzata con l'uso di
+     attributi(che a loro volta possono essere oggetti);
+
+    -Una seconda parte che descrive l'implentazione delle azioni che modificano lo stato interno dell'oggetto,
+     realizzata mediante l'utilizzo di funzioni membro, dette metodi;
+
+    Il responsabile dell'istanziazione dell'oggetto di una determinata classe è il metodo "costruttore".
+	Esso è un metodo che ha lo stesso nome della classe e nessun tipo di ritorno.
+	Una classe ha bisogno di un costruttore per essere istanziata.
+
+	Il responsabile della distruzione dell'oggetto di una determinata classe è il metodo "distruttore".
+    Esso  viene chiamata automaticamente quando si distrugge un oggetto, ha lo stesso nome della sua classe preceduto dal carattere ~ (tilde) neanche il distruttore ha tipo di ritorno ma, al contrario del costruttore, non accetta parametri e non ve ne può essere più d'uno.
+
+    La distruzione degli oggetti allocati in memoria avviene in ordine inverso rispetto alla loro costruzione, il meccanismo segue un comportamento bottom-up (elimizazione dallo stack);
+
+    Al fine di rappresentare al meglio l'entità in questione gli oggetti possono essere messi tra di loro in relazione in uno dei seguenti modi:
+
+    Relazioni part-of (has-a):
+
+        - Composizione: In questo tipo di relazione troviamo un oggetto che per esistere richiede l'esistenza di un altro oggetto che lo
+                        compone;
+
+                        es. Automobile-Serbatoio
+
+        - Aggregazione: Ci sono dei casi in cui due oggetti hanno una relazione, ma non necessariamente l’oggetto “contenuto” è una
+                        “esclusiva” dell’oggetto contenitore;
+
+                        es. Automobile-Persona
+    Gerarchia(is-a):
+
+        - Ereditarietà: un oggetto discende da un altro diventandone una sua "specifica";
+
+                        es. Automobile-Berlina
+
+        - Ereditarietà multipla: un oggetto discende contemporaneamente da due diverse classi:
+
+                        es. Taxi- is a Automobile
+                                - is a  Mezzo publico
+

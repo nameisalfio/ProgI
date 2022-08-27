@@ -1,0 +1,188 @@
+10)Domanda:
+
+    Si introducano le classi e gli oggetti in C++, discutendo la loro utilità e i vantaggi del loro uso rispetto alla classica programmazione procedurale. SI discutano i principi fondamentali della programmazione a oggetti. Si facciano esempi di definizione di classi e istanziazione dei relativi oggetti in allocazione statica e dinamica.
+
+Risposta:
+
+    Il motivo fondante per l'esistenza del C++ è il supporto alla OOP(object oriented programming).
+    Con "oggetto" si intende una qualsiasi entità reale o astratta avente un proprio stato interno e capace di eseguire/subire azioni che lo alterano;
+
+    Una classe è un insieme di oggetti che condividono una struttura comune formata da:
+
+    - dati che ne descrivono lo stato interno(attributi);
+    - descrizione di azioni che essi possono compiere(metodi o funzioni membro);
+
+    Le classi definiscono quindi tipi di dato non primitivi, detti user-defined ovvero definiti dall'utente, in funzione del problema da risolvere.Esse possono separare l'interfaccia dall'implementazione in modo che solo il programmatore sarà a conoscenza dei dettagli implementativi mentre l'utilizzatore ne dovrà conoscere dolo l'interfaccia;
+
+    La definizione di una classe si scompone in due parti:
+
+    -Una prima parte in cui vengono descritti i dati e l'interfaccia dell'oggetto, realizzata con l'uso di
+     attributi(che a loro volta possono essere oggetti);
+
+    -Una seconda parte che descrive l'implentazione delle azioni che modificano lo stato interno dell'oggetto,
+     realizzata mediante l'utilizzo di funzioni membro, dette metodi;
+
+    Il responsabile dell'istanziazione dell'oggetto di una determinata classe è il metodo "costruttore".
+	Esso è un metodo che ha lo stesso nome della classe e nessun tipo di ritorno.
+	Una classe ha bisogno di un costruttore per essere istanziata.
+
+	Tipi di Costruttore:
+
+	-	di default: senza parametri;
+	-	completo(standard): prende tutti i parametri in input;
+	- 	copy constructor: copia bitwise (shallow-copy) dei dati di un oggetto per costruirne uno identico;
+                (non effettua una copia deei puntatori che unteranno quindi tutti alla stessa area di memoria)
+
+    Il responsabile della distruzione dell'oggetto di una determinata classe è il metodo "distruttore".
+    Esso  viene chiamata automaticamente quando si distrugge un oggetto, ha lo stesso nome della sua classe preceduto dal carattere ~ (tilde) neanche il distruttore ha tipo di ritorno ma, al contrario del costruttore, non accetta parametri e non ve ne può essere più d'uno.
+
+    La distruzione degli oggetti allocati in memoria avviene in ordine inverso rispetto alla loro costruzione, il meccanismo segue un comportamento bottom-up (elimizazione dallo stack);
+
+    Gli oggetti possono essere messi tra di loro in relazione in uno dei seguenti modi:
+
+    Relazioni part-of (has-a):
+
+        - Composizione: In questo tipo di relazione troviamo un oggetto che per esistere richiede l'esistenza di un altro oggetto che lo
+                        compone;
+
+                        es. Automobile-Serbatoio
+
+        - Aggregazione: Ci sono dei casi in cui due oggetti hanno una relazione, ma non necessariamente l’oggetto “contenuto” è una
+                        “esclusiva” dell’oggetto contenitore;
+
+                        es. Automobile-Persona
+    Gerarchia(is-a):
+
+        - Ereditarietà: un oggetto discende da un altro diventandone una sua "specifica";
+
+                        es. Automobile-Berlina
+
+        - Ereditarietà multipla: un oggetto discende contemporaneamente da due diverse classi:
+
+                        es. Taxi- is a Automobile
+                                - is a  Mezzo publico
+
+     I principi cardine della OOP sono :
+
+    1) Astrazione
+    2) Incapsulamento
+    3) Ereditarietà
+    4) Polimorfismo
+
+    ASTRAZIONE :
+    ---------------------
+    Generalizzare i concetti da affrontare per avere un interfaccia comune per tutti gli oggetti di quel tipo.
+    Un'astrazione deve denotare le caratteristiche essenziali di un oggetto.
+
+    INCAPSULAMENTO (information Hiding) :
+    ---------------------
+    Utilizzo di "modificatori di accesso" in modo che alcune informazioni risultino publiche e che altre rimangano
+    nascoste all'esterno e accessibili solo ai membri della classe stessa.
+
+    Di default, i membri di una classe sono nascosti all'esterno, cioè, i suoi dati ed i suoi metodi sono privati.
+    È possibile, però, specificare diversi livelli di accessibilità per i contenuti della classe:
+
+    - sezione "public": contenuti a cui si può accedere dall'esterno della classe;
+    - sezione "private": contenuti ai quali si può accedere solo dall'interno della classe;
+    - sezione "protected": contenuti ai quali si può accedere solo da membri della classe stessa e di classi
+                           derivate;
+
+    EREDITARIETÀ :
+    ---------------------
+    Meccanismo che consente livelli di astrazione gerarchici che consentono di conservare le proprietà della classe base nelle classi derivate.
+    Una classe derivata eredita attributi e metodi dalla classe base già esistente. Un oggetto di classe derivata segue la relazione "is-a" rispetto alla classe base
+
+        es.     bicycle is-a vehicle
+
+    La dichiarazione di una classe derivata deve includere il nome della classe base da cui deriva ed, eventualmente, uno specificatore d'accesso indicante il tipo di ereditarietà seguendo la sintassi:
+
+        class ClasseDerivata : specific_accesso_opz ClasseBase {
+            //attributi
+            //metodi
+        };
+
+    Quando una classe eredita contemporaneamente da più classi(ereditarietà multipla) si specificano più modificatori di accesso:
+
+        class Taxi : protected Automobile , public Mezzo_publico{
+            //attributi
+            //metodi
+        };
+
+    -Ereditarietà pubblica:
+        contenuti public -> public
+        contenuti protected -> protected
+        contenuti private -> inaccessibili
+
+    -Ereditarietà protetta:
+        contenuti public -> protected
+        contenuti protected -> protected
+        contenuti private -> inaccessibili
+
+    -Ereditarietà privata:
+        contenuti public -> private
+        contenuti protected -> private
+        contenuti private -> inaccessibili
+
+    Se si omette lo specificatore di accesso si assumerà per default "private";
+
+    POLIMORFISMO
+    ---------------------
+    la proprietà in base alla quale oggetti differenti possono rispondere in maniera diversa ad uno stesso messaggio. Si manifesta quando in una gerarchia ereditaria vi sono ridefinizioni dello stesso metodo (stessa firma) che ha un comportamento diverso a seconda dell'oggetto chiamante(OVERRIDING).
+
+    Strettamente legato al concetto di "binding":
+
+    Binding statico: la connessione tra la chiamata di una funzione ed il codice che l'implementa avviene a
+                     compile-time (in fase di compilazione);
+
+    Binding dinamico: la connessione tra la chiamata di una funzione ed il codice che l'implementa avviene a
+                      run-time (in fase di esecuzione). Solo durante l'esecuzione del programma si determinerà il binding effettivo (tipicamente tramite il valore di un puntatore ad una classe base)
+
+    in C++ il binding per default è quello statico e per specificare il binding dinamico si fa precedere la dichiarazione della funzione dalla keyword "virtual".
+
+    "Virtual" anteposto alla dichiarazione di una funzione indica al compilatore che essa può essere ridefinita in  una classe derivata. Si deve qualificare un metodo di una classe con virtual solo quando esiste la possibilità che da quella classe se ne possano derivare altre.
+
+    Le funzioni virtuali servono nella dichiarazione di classi astratte e nel polimorfismo:
+
+    es.     class figura {
+
+                public:
+
+                virtual double calcolare_area(void) const;
+                virtual void disegnare(void) const;
+
+                // altre funzioni membro
+            };
+
+    Le funzioni vengono chiamate sempre tramite un puntatore a figura nel caso di polimorfismo dinamico:
+
+    es.    figura* s[10];
+           for (int i = 0; i < 10; i++)
+                s[i] -> disegnare();
+
+    Il compilatore C++ non può sapere l'implementazione specifica della funzione disegnare() che sarà chiamata a run-time (binding dinamico).
+
+    Il principale VANTAGGIO del Polimorfismo è il riutilizzo del codice, infatti permette di definire un'interfaccia comune per lavorare con oggetti di diverse classi.
+
+    Regole per sfruttare il polimorfismo dinamico:
+
+    1) creare una gerarchia di classi in cui le operazioni più importanti siano definite nei metodi virtual nella
+       classe base;
+
+    2) ridefinire i metodi nelle classi derivate;
+
+    3) invocazione di metodi delle classi derivate tramite puntatori/reference a classe base (binding dinamico);
+
+    Osservazione:
+    Il costruttore non è mai virtual:
+
+        a run-time, durante la creazione dell'oggetto, il programma si aspetta di trovare le istruzioni per la costruzione dell'oggetto in una tabella di metodi virtuali (v-table); per cui, se fosse virtuale proprio il costruttore, vuol dire che prima che il costruttore virtual costruisse la v-table avrebbe bisogno di consultare la v-table che ancora deve essere creata. (Non ha senso!)
+
+    Dichiarare il distruttore come virtual è spesso utile:
+
+        ragionando sulla conformità di tipo(principio secondo il quale un oggetto di classe figlia è anche un oggetto di classe madre) il compilatore richiamerebbe il distruttore della classe base e quindi distruggerebbe le risorse della classe madre e non quelle specifiche della classe figlie.
+
+    La RTTI (RunTime Type Information o RunTime Type Identification) consente ai programmi che manipolano puntatori e riferimenti ad oggetti di una classe base, di determinare il tipo dell'oggetto durante l'esecuzione invece che solo al momento della compilazione.
+	Per invocare un metodo su un'istanza il cui tipo verrà determinato a run-time si possono utilizzare due strategie:
+
+	1) DYNAMIC CAST + CONTROLLO dell'esistenza del puntatore per capire se il cast è avvenuto con successo
+	2) TYPEID() + STATIC CAST

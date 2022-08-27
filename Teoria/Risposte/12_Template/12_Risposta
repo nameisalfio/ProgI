@@ -1,0 +1,89 @@
+12)Domanda:
+
+    Si introducano le classi template, evidenziandone i principali usi. Si facciano degli esempi in C++ di definizione di classi template e istanziazione dei relativi oggetti.
+
+Risposta:
+
+    In C++, il template implementa il concetto di tipo parametrizzato: il tipo viene specificato come se fosse un parametro. I templates permettono di definire una classe (o una funzione) senza specificare il tipo di dato di uno o più dei suoi parametri. Sfrutta il fatto che gli algoritmi di risoluzione di molti problemi non dipendono dal tipo di dato da elaborare. I template sono quindi funzioni e classi generiche, implementate per un tipo di dato da definirsi in seguito e per utilizzarli il programmatore deve solo specificare i tipi con i quali essi debbono lavorare.
+
+    Funzioni template:
+
+    Insieme indeterminato di funzioni sovraccaricate che descrive l’algoritmo specifico di una funzione generica:
+
+    - l'algoritmo è specifico per la risoluzione di un preciso problema;
+    - la funzione è generica perchè è indipendente dal tipo di dato su cui opera;
+
+    Una funzione è una funzione template solo se è preceduta da un'appropriata clausola template secondo la seguente sintassi:
+
+        es. template <typename T>       o equivalentemente  			template<class T>
+            T func(T a, int b){
+                //do something
+            }
+
+	Nel caso si scriva il prototipo separatamente rispetto all'implementazione, è necessario riportare il template del tipo generico anche sopra la firma.
+
+	es.		#include<iostream>
+			using namespace std;
+
+			template<typename T>
+			T sum(T a, T b);		//prototipo
+
+			int main(){
+
+				int a = 2;
+				int b = 3;
+				cout << sum(a,b) << endl;		//invocazione
+			}
+
+			template<typename T>
+			T sum(T a, T b){return a+b;}		//implementazione
+
+    La clausola "template <typename T>" serve a generare una serie di funzioni sovraccaricate, la si può vedere come un generatore che serve a duplicare codice in corrispondenza della chiamata di funzione.
+
+    Classi template:
+
+    Permettono di definire classi parametriche che possono gestire differenti tipi di dato.
+    Il tipo generico è usato per dati interni alla classe e per i parametri e i dati locali delle funzioni membro.
+    Anche qui è necessaria la clausola template:
+
+        es.     template<typename T>
+                class Point2D {
+                    T x, y;
+
+                    public:
+                        Point2D(T x, T y) : x(x), y(y) {}
+                        T getX() {return x;}
+                        T getY() {return y;}
+                };
+
+    L'istanziazione di un oggetto di classe template deve specificare il tipo come se fosse un parametro:
+
+        es.     Point2D<int> obj(2,3);
+
+    I parametri delle classi template possono essere anche di uno dei tipi di dati primitivi:
+
+        es.     template<typename T, const int num = 40>
+                class Mazzo{
+                    //....
+                };
+
+    Una classe generica può anche contenere funzioni membro che lavorano con diversi tipi di dato generici:
+
+        es.     template<typename T>
+                class Point2D {
+                    T x, y;
+                    public:
+                        //...
+                        template<typename T2>       //T2 è il secondo tipo generico
+                        void sum(T2 num);
+                };
+
+        in questo caso se si volesse scorporare l'implementazione:
+
+                template<typename T>
+                template<typename T2>
+                void Point2D<T>::sum(T2 num) {x+=num; y+=num;}
+
+    Il concetto di template, che riguardi classi o funzioni, favorisce il riutilizzo del codice e riduce di molto il lavoro del programmatore che quindi non è costretto a scrivere funzioni overloading che si adattino a molti tipi di dato diversi ma può concentrarsi sulla scrittura del codice.
+
+

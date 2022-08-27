@@ -1,0 +1,112 @@
+4)Domanda:
+
+    Gestione di input e output da/su standard input, standard output e file. Esempi in codice C++.
+    Gestione degli errori di input output. Esempi in C++ di codice funzionante e non funzionante (con
+    commento sul perché è in quali occasioni non funziona - es. design time o compile time? Con quale input?))
+
+Risposta:
+
+    Quando un programma dipende da un input esterno(es. cin) è possibile che si comporti inaspettatamente in base all'input ricevuto. Quando un programma termina la propria esecuzione restituisce al chiamante, solitamente la riga di comando,un valore intero (per convenzione è 0 se non ci sono errori, 1 in caso contrario).
+    L’header "cstdlib" mette a disposizione due costanti EXIT_FAILURE e EXIT_SUCCESS, che vengono utilizzate come valori di ritorno.
+
+    C++ mette a disposizione dei costrutti per la gestione dei casi di errore:
+
+- cerr : viene utilizzato al posto del cout per evidenziare messaggi di errore dall'output del
+         programma;
+
+        ex. #include <iostream>
+            #include <cstdlib>
+            using namespace std;
+
+            int main () {
+                int x;
+
+                cout << "Introdurre un numero dispari: ";
+                cin >> x;
+
+                if(x%2==0){     // !!!
+                    cerr << "Errore, il numero inserito non e' dispari!";
+                    return EXIT_FAILURE;
+
+                } else {
+                    cout << "Numero dispari, esco regolarmente";
+                    return EXIT_SUCCESS;
+                }
+            }
+
+- fail() : Il metodo fail() viene richiamato sull’oggetto cin dopo aver letto da input.
+           Esso restituirà true se c’è stato un errore di input (es. una stringa che non può essere convertita in int).
+
+         ex.    #include <iostream>
+                #include <cstdlib>
+                using namespace std;
+
+                int main () {
+                    int x;
+
+                    cout << "Introdurre un numero intero: ";
+                    cin >> x;
+
+                    if (cin.fail()){
+                            cerr << "Errore!";
+                            return EXIT_FAILURE;
+                    } else {
+                        cout << "Il numero inserito e' " << x;
+                    }
+                }
+
+- clear() e ignore() : Vengono utilizzati quando si vuole fare un secondo tentativo di lettura.
+                       Il metodo clear() di cin permette di resettare i flag di errore di cin e se vogliamo provare a leggere nuovamente da input stream, dobbiamo anche utilizzare l’istruzione cin.ignore(numeric_limits<streamsize>::max() , '\n') .
+                       Questa istruzione serve a svuotare il buffer di cin in modo che sia possibile inserire nuovi caratteri.
+
+                  ex:       #include <iostream>
+                            #include <limits>
+                            using namespace std;
+
+                            int main () {
+                                int x;
+
+                                cout << "Introdurre un numero intero: ";
+                                bool done = false;
+
+                                do {
+                                    cin >> x;
+                                    if (cin.fail()) {
+                                        cerr << "Errore! Inserire un numero intero: ";
+                                        cin.clear();
+                                        cin.ignore (numeric_limits<streamsize>::max() , '\n') ;
+                                    }
+                                    else
+                                        done = true;
+                                } while(!done);
+
+                                cout << "Il numero inserito e' " << x;
+                            }
+
+
+                        Il codice sopra riportato termina solo se non vi sono errori nell'input.
+
+- eof() :   eof è un carattere speciale che rappresenta la fine della lettura di un flusso di dati.
+            Possiamo controllare che in cin sia stato inserito il carattere di end of file con il metodo cin.eof()
+
+            ex.     #include <iostream>
+                    using namespace std;
+
+                    int main(){
+                        int somma=0;
+                        int x;
+
+                        bool finito = false;
+                        while(!finito) {
+                            cout << "Inserisci un numero (premi CTRL + D per terminare): ";
+                            cin >> x;
+
+                            if (cin.eof()) {    //true solo se si inserisce l'eof con CTRL + D
+                                finito = true;
+                            } else {
+                                somma += x;
+                            }
+                        }
+                        cout << "La somma dei numeri inseriti e' " << somma;
+                    }
+

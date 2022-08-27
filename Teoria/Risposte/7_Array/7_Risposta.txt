@@ -1,0 +1,123 @@
+7)Domanda:
+
+    Si introducano gli array in C++, discutendone l’utilità, dettagliando come sono
+    rappresentati in memoria e riportando esempi dei diversi modi in cui è possibile
+    istanziarli. Si discuta della relazione tra array e puntatori e si mostri come è
+    possibile indicizzare un array utilizzando l’aritmetica dei puntatori. Si riportino
+    degli esempi di istanziazione di un array bidimensionale in allocazione dinamica.
+
+Risposta:
+
+    Un array è una sequenza di locazioni di memoria riservata ad una serie di dati dello stesso tipo.
+    Il tipo di elementi immagazzinati nell'array può essere sia built-in che un tipo user-defined.
+    Gli elementi che contiene sono numerati con espressioni intere dette indici dell'array, che forniscono accesso diretto (lettura e scrittura) ad ogni elemento e assumono valori da 0 a n-1 (con n=dimensione dell'array).
+    NB. L'i-esimo elemento dell'array avrà sempre indice i-1;
+
+    Possiamo accedere all'i-esimo(di indice i) elemento di un vettore 'vet' con la seguente sintassi: vet[i]
+    Quindi per assegnare 5 alla seconda posizione dell'array : vet[1] = 5;
+
+    La sintassi più comune per l'allocazione di un vettore richiede che vengano esplicitati:
+
+    1- Tipo di dati che deve contenere
+    2- Identificatore o nome del vettore
+    3- Dimensione o numero di elementi
+
+    es.  int vet[10];   //vettore di 10 elementi di tipo int
+
+    Gli elementi di un vettore potrebbero banalmente essere inizializzati tutti a 0 nel seguente modo:
+
+        int vet[10] = {0}       o equivalentemente         int vet[10]{0}
+
+    Si possono inizializzare gli elementi dell'array anche inserendoli tramite lista di inizializzazione:
+
+        int vet[5] = {21, 4, 13, 16, 9}
+
+    in questo caso è possibile non specificare la dimensione del vettore:
+
+        int vet[] = {21, 4, 13, 16, 9}
+
+    Un altro modo per inizializzare gli elementi di un vettore è utilizzare un ciclo:
+
+        for(int i=0; i<DIM; i++){
+            vet[i] = i*2;
+        }
+
+    Si possono creare array a più dimensioni, per esempio matrici(array bidimensionali):
+
+    es.     int mat[2][5];
+
+    Per inizializzazione array multidimensionali valgono le stesse regole sintattiche degli array monodimensionali.
+    Anche in questo caso è possibile omettere una dimensione(solo la prima):
+
+    es.     int mat [][5] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};    //si ricava in automatico la prima dimensione
+
+Relazione puntatori-array:
+
+    Il nome di un vettore è l'indirizzo in memoria del primo elemento(il suo puntatore).
+    Mediante la espressione (vet + x) si ottiene l’indirizzo della locazione di memoria distante x posizioni
+    rispetto alla locazione puntata da vet.
+
+    L’incremento è operato dal compilatore, e dipende dalla dimensione in byte del tipo di ptr (es.4 per un int)
+
+    Si può usare quindi l'aritmetica dei puntatori per accedere agli altri elementi sfruttando il nome del vettore e sommando un'espressione intera per ottenere il puntatore ad un altro elemento dell'array.
+
+    es.  int vet[3] = {5, 2, 7};
+         cout << *(vet +2) << endl;      //stampa 7
+
+    Si può utilizzare l'aritmetica dei puntatori pure per un accesso in scrittura:
+
+    es.  *(vet+1) = 4;       //inserisce 4 nel secondo elemento dell'array
+
+    Operatori ++, --, += , -= ecc.. consentiti nell'aritmetica dei puntatori:
+
+    es.  int v [] = {1, 2, 3, 4, 5};
+         int∗ ptr = v;
+         cout << ∗(++ p t r );      // stampa 2
+
+    è possibile effettuare un' operazione di sottrazione tra puntatori che appartengono allo stesso array:
+
+    es.  short vet[5] = {1, 2, 3, 4, 5};
+         print(vet, 5);
+         short* ptr = &vet[4]; // 5
+         short* ptr2 = &vet[3]; // 4
+
+         cout << ptr - ptr2 << endl;    //stampa 1 (la differenza in numero di locazioni di memoria)
+
+
+    Si faccia attenzione a non accedere a zone di memoria non allocate per l'applicazione:
+
+    es.  int vet[3] = {5, 2, 7};
+         vet[5] = 6;        //errore a run-time
+
+    Tuttavia l'istruzione non genera nessun errore a compile-time.
+
+    Si possono ricevere array come parametri formali o restituirli come valore di ritorno di una funzione.
+    In questo caso si rende necessario allocare dinamicamente la memoria in quanto si necessita che la struttura permanga nella RAM anche dopo che si esce dalla funzione.
+
+    Sintassi : operatore new
+
+    es. int* vet = new int[5];      //allocazione dinamica di un vettore di 5 elementi
+
+    Si possono allocare dinamicamente anche strutture più pesanti, come le matrici:
+
+    es. //Matrice di double di dimensione n x m
+
+        double** vet = new double* [n];
+        for(int i=0; i<n; i++){
+            vet[i] = new double[m]{0};      //inizializza a 0 tutti gli elementi della matrice
+        }
+
+    Durante le lezioni del corso spesso sono stati riscontrati problemi come l'allocazione dinamica di matrici di puntatori:
+
+    es. float*** vet = new float**[n];
+        for(int i=0; i<n; i++){
+            vet[i] = new float*[m];
+            for(int j=0; j<m; j++){
+                vet[i][j] = new float{0};       //solita sintassi per l'inizializzazione a 0
+            }
+        }
+
+    Ovviamente in questo caso è molto più semplice riscontrare problemi di accesso in memoria(per esempio nullptr) e quindi prima di dereferenziare vale la solita regola del controllo puntatore
+
+    es. if(vet[i][j])
+            cout << *vet[i][j];

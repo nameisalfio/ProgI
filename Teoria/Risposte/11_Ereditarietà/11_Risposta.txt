@@ -1,0 +1,143 @@
+11)Domanda
+	
+	Si introduca l’ereditarietà tra classi, discutendone i principali vantaggi. Si facciano degli esempi in C++.
+	Si definiscano metodi e classi astratte e si discutano gli usi del modificatore “virtual”.
+	Si parli di overriding di metodi.
+
+Risposta:
+
+	L'ereditarietà è un meccanismo che consente livelli di astrazione gerarchici che consentono di conservare le proprietà della classe base nelle classi derivate.
+    Una classe derivata eredita attributi e metodi dalla classe base già esistente. Un oggetto di classe derivata segue la relazione "is-a" rispetto alla classe base
+
+        es.     bicycle is-a vehicle
+
+    La dichiarazione di una classe derivata deve includere il nome della classe base da cui deriva ed, eventualmente, uno specificatore d'accesso indicante il tipo di ereditarietà seguendo la sintassi:
+
+        class ClasseDerivata : specific_accesso_opz ClasseBase {
+            //attributi
+            //metodi
+        };
+
+    -Ereditarietà pubblica:
+        contenuti public -> public
+        contenuti protected -> protected
+        contenuti private -> inaccessibili
+
+    -Ereditarietà protetta:
+        contenuti public -> protected
+        contenuti protected -> protected
+        contenuti private -> inaccessibili
+
+    -Ereditarietà privata:
+        contenuti public -> private
+        contenuti protected -> private
+        contenuti private -> inaccessibili
+
+    Se si omette lo specificatore di accesso si assumerà per default "private";
+
+	Al fine di rappresentare al meglio l'entità in questione ha senso, per gli oggetti, discendere da più classi contemporaneamente. Si parla quindi di ereditarietà multipla.
+
+		es. un Taxi ha senso che discenda dalla classe Mezzo_publico
+							  ...ma anche dalla classe Automobile
+
+    Quando una classe eredita contemporaneamente da più classi(ereditarietà multipla) si specificano più modificatori di accesso:
+
+        class Taxi : protected Automobile , public Mezzo_publico{
+            //attributi
+            //metodi
+        };
+
+	Uno dei principali vantaggi dell'ereditarietà è che consente un largo riutilizzo di codice, infatti, dovendo riscrivere soltanto la parte di codice che "cambia" rispetto alla classe base, si riduce di molto il lavoro del programmatore.
+
+	es.		class cane{
+				const char* verso;
+
+			public:
+				cane():verso("bau bau"){}
+				void abbaia(){cout << verso << endl;}
+			};
+
+
+			class cane_domestico : public cane{		//Eredita anche abbaia() che non viene perciò ridefinito
+				string nome;
+
+			public:
+				cane_domestico(string nome):cane(), nome(nome){}
+				void identifica(){cout << "Mi chiamo " << nome << endl;}
+			};
+
+	Un altro principio fondamentale della OOP, insieme a quello dell'ereditarietà è quello del "polimorfismo".
+	Esso si manifesta quando in una gerarchia ereditaria vi sono ridefinizioni dello stesso metodo (stessa firma) che ha un comportamento diverso a seconda dell'oggetto chiamante(OVERRIDING).
+
+	L'overriding è quindi la ridefinizione di un metodo già presente nella classe madre, che assume un comportamento diverso nella classe figlia, per tanto è imprescindibile dal concetto di ereditarietà.
+	NB Pur avendo una differente implementazione, un metodo overriding comunque conserva la stessa signature(firma).
+
+	Si ottiene la chiamata al metodo di override attraverso il meccanismo del dinamic-binding, ovvero quando l'associazione tra la chiamata a funzione e il riconoscimento della sua effettiva implentazione avviene a run-time (polimorfismo dinamico). Si indica al compilatore che il metodo subirà una possibile ridefinizione in una o più classi figlie attraverso la keyword "virtual".
+
+	Il metodo che subisce l'overriding viene richiamato sempre attraverso un puntatore/reference a classe madre, nel caso di polimorfismo dinamico: quindi si sfrutta il concetto di conformità di tipo (un oggetto di classe figlia è comunque anche un oggetto di classe madre).
+
+	La RTTI (RunTime Type Information o RunTime Type Identification) consente ai programmi che manipolano puntatori e riferimenti ad oggetti di una classe base, di determinare il tipo dell'oggetto durante l'esecuzione invece che solo al momento della compilazione.
+	Per invocare un metodo su un'istanza il cui tipo verrà determinato a run-time si possono utilizzare due strategie:
+
+	1) DYNAMIC CAST + CONTROLLO dell'esistenza del puntatore per capire se il cast è avvenuto con successo
+	2) TYPEID() + STATIC CAST
+
+	Metodi virtuali puri:
+
+	In certi casi non è possibile dare una definizione di base di un metodo nella classe madre, si parla allora di metodi "pure-virtual", ovvero il significato di quel metodo deve essere necessariamente ridefinito nelle classi figlie affinchè possa essere istanziato correttamente l'oggetto. Si definisce un metodo virtuale puro utilizzando la seguente sintassi:
+
+		virtual nome_metodo([eventuali parametri]) = 0;		//virtuale puro
+
+
+	• Una classe con una o più funzioni virtuali pure si dice classe astratta;
+
+	• Non si possono creare istanze di una classe astratta;
+
+	• È comunque possibile dichiarare puntatori e reference a tipi astratti;
+
+	• Se una classe derivata non fornisce l’implementazione di una o più funzioni virtuali pure, allora anche essa diverrà
+	  astratta;
+
+	es.		class poligono{
+
+			public:
+				poligono(){}
+				virtual void printArea() = 0;
+			};
+
+			class quadrato : public poligono{
+				int lato;
+
+			public:
+				quadrato(int lato):lato(lato){}
+				void printArea(){cout << lato*lato << endl;}
+			};
+
+			class triangolo : public poligono{
+				int lato;
+
+			public:
+				triangolo(int lato):lato(lato){}
+				void printArea(){cout << (lato*lato)/2 << endl;}
+			};
+
+//Versione errata
+
+			poligono* q;
+			q->printArea();		//genera errore a run-time (non si sa quale override richiamare)
+
+//Versione corretta
+
+			poligono* q;
+
+			int c;
+			cout << "Inserisci c: " << endl;
+			cin >>c;
+
+			if(c){
+				q = new quadrato(5);		//polimorfismo dinamico
+				q->printArea();
+			}else{
+				q = new triangolo(5);		//polimorfismo dinamico
+				q->printArea();
+			}

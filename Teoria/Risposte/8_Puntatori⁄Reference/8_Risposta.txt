@@ -1,0 +1,154 @@
+8)Domanda:
+
+    Si introducano i puntatori in C++, indicandone la sintassi e discutendone i principali vantaggi rispetto alle variabili non puntatore. Si introducano le reference e si discutano le similarità e differenze tra puntatori e reference. Si facciano degli esempi in C++ indicando con dei diagrammi in che modo viene modificata la memoria. Si discuta dei diversi usi della parola “const” nell’istanziazione di una variabile puntatore.
+
+Risposta:
+
+    Una variabile è una cella di memoria di dimensione opportuna, che contiene uno specifico tipo di dato.
+    Ad essa è associato un indirizzo di memoria che viene utilizzato per l'accesso alla variabile.
+
+    Un puntatore è invece una variabile che contiene l'indirizzo in memoria di un altra variabile.
+    Essi vengono utilizzati per effettuare passaggi per riferimento, passaggi di funzioni ad altre funzioni e di manipolare strutture dinamiche di dati.
+
+    Sintassi:
+
+    Si sichiara una variabile puntatore al tipo di dato a cui dovrà puntare e si assegna l'indirizzo della variabile tramite l'operatore di referenziazione '&' che serve per l'estrazione dell'indirizzo:
+
+        es.     int a = 10;
+                int* ptr = &a;
+
+    è buona norma inizializzare un puntatore subito dopo la sua dichiarazione, tuttavia se non è possibile attribuire una corretta semantica all'assegnamento, si può assegnare un valore nullptr (non punta a nulla).
+    Si può accedere al valore puntato dalla variabile puntatore utilizzando l'operatore di dereferenziazione '*'.
+    La sintassi è la seguente:
+
+        es.     int* ptr = nullptr;
+                int a = 10;
+                ptr = &a;
+
+                cout << ptr;        //stampa l'indirizzo in esadecimale di 'a'
+                cout << *ptr;       //stampa il valore della variabile 'a'
+                cout << &ptr;       //stampa l'indirizzo in memoria della variabile che punta ad 'a'
+
+                *ptr = &a;          //ERRORE!  invalid conversion from int to int*
+
+    -Vantaggi dei puntatori:
+
+    1)L'uso dei puntatori i puntatori consentono il passaggio di dati di grandi dimensioni con la massima efficienza.
+
+        es.     Matrice3D* sum (Matrice3D* m1, Matrice3D* m2){
+                    //somma
+                }
+
+    Nell'invocazione del metodo avverrà un passaggio solo dell'indirizzo delle due matrici(limita l'overhead).
+    Il metodo restituisce il puntatore alla matrice somma.
+
+    2)Si può riassegnare l'indirizzo di un altro oggetto(o variabile) in modo che lo stesso puntatore punti a oggetti(variabili) differenti in differenti istanti di tempo.
+
+        es.    ClasseX obj1, obj2;
+               ClasseX * ptr = &obj1;
+               ptr->metodo();
+               ptr = &obj2;
+               ptr->metodo();
+
+    -Svantaggi nell'uso dei puntatori:
+
+    1)Sintassi tediosa:
+
+        es.   ptr->metodo();
+
+                oppure
+
+              (*ptr).metodo();
+
+    anche nel pasaggio dei parametri:
+
+        es.   Matrice3D* result = sum(&m1, &m2);
+
+    2)Controllo esistenza del puntatore:
+
+        es.     if(ptr)
+                    ptr->metodo();
+
+    Per mantenere i vantaggi derivati dall'utilizzo dei puntatori(overhead pressochè nullo nel passaggio di parametri) e, allo stesso tempo, eliminare le complicazioni derivate dal loro utilizzo(esistenza e sintassi) sono stati introdotti i reference:
+
+    Un reference è una variabile che fa riferimento a un'altra variabile(alias).
+    Sia i puntatori che i riferimenti possono essere usati per riferirsi agli oggetti indirettamente. Sostengono
+    essenzialmente gli indirizzi di memoria come valori.
+    I due meccanismi, il pointer e reference, hanno sintassi e utilizzo diversi.
+
+    -Vantaggi dei reference:
+
+    1)Sintassi:
+
+        es.     ClasseX obj;
+                ClasseX& ref = obj;     //da adesso ref è un alias di obj
+
+    valgono quindi
+
+                ClasseX* ptr = &ref;    //OK
+                ref.metodo();   //OK
+
+    2)Un reference deve essere inizializzato contestualmente alla sua dichiarazione e per tanto non può mai assumere un valore nullo come accade invece con i puntatori.
+
+    -Svantaggi dei reference:
+
+    1)Un reference non può cambiare oggetto di riferimento:
+
+        es.     ClasseX obj1, obj2;
+                ClasseX& ref = obj1;
+                ref = obj2;     //Non cambia oggetto del riferimento
+
+    infatti la sintassi utilizzata ha una semantica ben diversa, essa copia in obj1 lo stato interno di obj2.
+
+    2)Per la creazione di una collezione di oggetti vengono utilizzati i puntatori e non è possibile sostituirli
+    con i  reference. Non è possibile utilizzare i reference per allocazioni dinamiche della memoria.
+
+    Gli operatori ++ e -- nei puntatori operano sugli indirizzi, nei riferimenti operano sul valore.
+
+    A seconda dell'utilizzo che si farà della variabile bisogna scegliere se utilizzare un puntatore o un reference:
+
+    - se l'oggetto del riferimento dovrà cambiare allora bisogna utilizzare un puntatore
+    - se si necessita di una nozione di "non valore" bisogna utilizzare un puntatore
+    - se il non-valore non è contemplato utilizzare un reference
+
+    Utilizzo della keyword "const":
+
+    1)Puntatori read-only(costanti):
+
+    es.    int a = 20;
+           const int* ptr = &a;
+
+    Anteponendo const alla dichiarazione della variabile puntatore lo si rende "read-only", ovvero un  puntatore di sola lettura(o costante). Singifica che non è possibile modificare lo stato interno di a attraverso ptr.
+
+    2)Puntatori a costanti:
+
+    es.     int a = 20;
+            int* const ptr = &a;
+
+    Inserendo la keyword "const" invece, tra il tipo e l'identificatore del puntatore, si ottiene un puntatore a costante, ovvero esso va inizializzato contestualmente alla sua dichiarazione e non potrà subire riassegnamenti.
+
+    3)Puntatori costanti a variabili costanti:
+
+    es.     int a = 20;
+            const int* const ptr = &a;
+
+    Con questa sintassi si indica un read-only pointer a costante, singifica che il puntatore non può cambiare oggetto di riferimento e in oltre non è possibile modificare lo stato interno di a tramite ptr.
+
+
+    Si può utilizzare "const" anche con l'uso dei reference per ottenere dei read-only reference:
+
+    es.     ClasseX obj;
+            const ClasseX ref = obj;
+
+    In questo caso ref non potrà essere utilizzato per modificare lo stato interno di obj
+
+    Metodi che restituiscono reference:
+
+    es.     ClasseX& func (int vet[], int idx){
+                return vet[idx];
+            }
+
+            func(vet, 2) = .....;       //OK
+
+    Utilizzare un reference come tipo di ritorno rende possibile l'utilizzo del valore ritornato come lvalue modificabile
+
