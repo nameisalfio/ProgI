@@ -1,0 +1,79 @@
+15)Domanda:
+
+    Si introduca il concetto di polimorfismo, discutendo a cosa serve e come si implementa. Si parli di Run-Time Type Identification (RTTI)
+
+Risposta:
+
+    Il polimorfismo è la proprietà in base alla quale oggetti differenti possono rispondere in maniera diversa ad uno stesso messaggio. Si manifesta quando in una gerarchia ereditaria vi sono ridefinizioni dello stesso metodo (stessa firma) che ha un comportamento diverso a seconda dell'oggetto chiamante(OVERRIDING).
+
+    Strettamente legato al concetto di "binding":
+
+    Binding statico: la connessione tra la chiamata di una funzione ed il codice che l'implementa avviene a
+                     compile-time (in fase di compilazione);
+
+    Binding dinamico: la connessione tra la chiamata di una funzione ed il codice che l'implementa avviene a
+                      run-time (in fase di esecuzione). Solo durante l'esecuzione del programma si determinerà il binding effettivo (tipicamente tramite il valore di un puntatore ad una classe base)
+
+    in C++ il binding per default è quello statico e per specificare il binding dinamico si fa precedere la dichiarazione della funzione dalla keyword "virtual".
+
+    "Virtual" anteposto alla dichiarazione di una funzione indica al compilatore che essa può essere ridefinita in  una classe derivata. Si deve qualificare un metodo di una classe con virtual solo quando esiste la possibilità che da quella classe se ne possano derivare altre.
+
+    Le funzioni virtuali servono nella dichiarazione di classi astratte e nel polimorfismo:
+
+    es.     class figura {
+
+                public:
+
+                virtual double calcolare_area(void) const;
+                virtual void disegnare(void) const;
+
+                // altre funzioni membro
+            };
+
+    Le funzioni vengono chiamate sempre tramite un puntatore a figura nel caso di polimorfismo dinamico:
+
+    es.    figura* s[10];
+           for (int i = 0; i < 10; i++)
+                s[i] -> disegnare();
+
+    Il compilatore C++ non può sapere l'implementazione specifica della funzione disegnare() che sarà chiamata a run-time (binding dinamico).
+
+    Il principale VANTAGGIO del Polimorfismo è il riutilizzo del codice, infatti permette di definire un'interfaccia comune per lavorare con oggetti di diverse classi.
+
+    Regole per sfruttare il polimorfismo dinamico:
+
+    1) creare una gerarchia di classi in cui le operazioni più importanti siano definite nei metodi virtual nella
+       classe base;
+
+    2) ridefinire i metodi nelle classi derivate;
+
+    3) invocazione di metodi delle classi derivate tramite puntatori/reference a classe base (binding dinamico);
+
+    La RTTI (RunTime Type Information o RunTime Type Identification) consente ai programmi che manipolano puntatori e riferimenti ad oggetti di una classe base, di determinare il tipo dell'oggetto durante l'esecuzione invece che solo al momento della compilazione(si ottiene il polimorfismo a run-time o dinamico).
+    Per invocare un metodo su un'istanza il cui tipo verrà determinato a run-time si possono utilizzare diversee strategie:
+
+    Cast dinamico:
+
+        es.     B *pp = dynamic_cast<B*>(p);
+                if(pp)
+                    pp->f();
+
+	Il dynamic_cast è un cast sicuro che restituisce un nullptr se il cast non è possibile.Una alternativa non sicura derivata dal C, sarebbe quella di fare un cast standard:
+
+        es.     ((B*)p)->f();
+
+    Un alternativa C++ sarebbe il cast statico:
+
+        es.     static_cast<B*>(p)->f();
+
+    Questi ultimi due cast non sono sicuri e possono creare problemi a runtime.
+
+    Una soluzione alternativa al dinamyc_cast consiste nel combinare l’operatore typeid che controlla i tipi a runtime con un cast statico:
+
+        es.     if(typeid(*p)==typeid(B))
+                    static_cast<B*>(p)->f();
+
+    In definitiva le uniche due strade sicure per richiamare un metodo su un'istanza il cui tipo verrà definito a run-time sono :
+
+    1) DYNAMIC CAST + CONTROLLO dell'esistenza del puntatore per capire se il cast è avvenuto con successo
+	2) TYPEID() + STATIC CAST
