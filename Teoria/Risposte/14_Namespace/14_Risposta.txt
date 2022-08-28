@@ -1,0 +1,82 @@
+14)Domanda:
+
+    Si parli della clausola namespace. A cosa serve e perché è utilizzata in C++? Si facciano degli esempi, utilizzando anche l’operatore di selettore di scope ::
+
+Risposta:
+
+    C++ mette a disposizione un costrutto apposito per la definizione di gruppi di nomi indipendenti gli uni dagli altri: i "namespace".
+
+    I namespace in C++ consentono di definire dei “contenitori” per i simboli (nomi di variabili, funzioni, classi). Il loro scopo è quello di evitare il "name clash", ovvero evitare che diverse librerie definiscano funzioni con nomi uguali.
+    I namespace introducono il più alto livello di scope.
+
+    La sintassi per la definizione di un namespace è la seguente:
+
+    es.     namespace <nome>
+            {
+                // definizione dei simboli
+                ...
+            }
+
+    Per l'inclusione di un namespace nel file sorgente si utilizza la direttiva del pre-processore "using namespace <nome>;" .
+
+    es.     using namespace std;
+
+    Quando si include una direttiva "using namespace" tutti i simboli in quel namespace diventeranno visibili senza aggiungere il prefisso namespace. Ad esempio, se si aggiunge using namespace std è lecito scrivere solo cout invece di std::cout quando si chiama il cout dell’operatore definito nello spazio dei nomi std.
+
+    Questo è un pò pericoloso! L'accesso all’intero namespace conveniente solo se si usano frequentemente i nomi definiti all’interno di esso poichè, essendo i namespace pensati per evitare conflitti di nome, scrivendo using namespace risparmi codice, ma perdi questo vantaggio.
+
+    Un’alternativa migliore è usare solo simboli specifici rendendoli così visibili senza il prefisso namespace.
+
+    es.     #include  using std::cout;
+
+            int main() {
+
+                cout << "Hello world!";
+                return 0;
+            }
+
+
+    Esempio di namespace contentente una classe:
+
+     es.   namespace geometric {
+
+                class Square {          //Classe
+                    double side;
+                    public:
+                        Square(double s) : side(s) {}
+                        double area() {return side*side;}
+                };
+
+                class Rectangle {       //Classe
+                    double base;
+                    double height;
+                    public:
+                        Rectangle(double b, double h) :base(b), height(h) {}
+                        double area() {return base*height;}
+                };
+
+        }
+
+    Una volta definita le classi nel namespace, posso accederervi in ​​diversi modi.
+
+    1) Usando il selettore di portata:
+
+        geometric::Square s(2);
+        cout << s.area();
+
+    2) Importando il simbolo Square:
+
+        using geometric::Square;
+        Square s(2);
+        cout << s.area();
+
+    3) Direttiva "using namespace geometric":
+
+        using namespace geometric;
+        Square s(2);
+        cout << s.area();
+
+    NB.Includere tutto il namespace mi permette di accedere anche agli altri simboli dello stesso namespace:
+
+        Rectangle r(3,2);
+        cout << r.area();
