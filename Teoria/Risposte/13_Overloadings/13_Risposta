@@ -1,0 +1,161 @@
+13)Domanda:
+
+    Si discuta del meccanismo di overloading degli operatori, indicandone i vantaggi.
+    Si facciano deli esempi in C++ di overloading di operatori su classi.
+
+Risposta:
+
+    C++ mette a disposizione dell'utente l'utilizzo di una serie di operatori che si applicano ai tipi predefiniti del linguaggio, in modo da poter effettuare delle operazioni aritmetiche e logiche su di essi.
+    A livello implementativo, gli operatori sono funzioni a tutti gli effetti, e come per tutte le funzioni, C++ consente di effettuarne l'overloading in modo da renderli utilizzabili per tipi predefiniti dall'utente.
+    Inoltre, nella veste di funzione, essi sono anche caratterizzati dal tipo del valore restituito, dal numero degli argomenti e dal loro ordine.
+
+    Alcuni operatori possono essere sovraccaricati solo come membri di classe (assegnamento, assegnamento di copia e spostamento) perchè per la loro implementazione è richiesto l'uso del membro this, altri solo come funzioni esterne alla classe (ad esempio gli operatori << e >> di inserimento ed estrazione da flusso), altri ancora indifferentemente nell'uno o nell'altro modo.
+
+    Nel caso di Overloading operatori come membri di classe dovremo passare in input solo l’operando di destra nel caso di operatori binari o nessun operando nel caso di operatori unari, in quanto l'operando di sinistra è sempre l'oggetto su cui viene invocato il metodo(collegato al puntatore this).
+
+	es.		class Point2D {
+				double x, y;
+
+				public:
+					Point2D(double _x, double _y) : x(_x), y(_y) {}
+
+					Point2D operator+(Point2D a){	//binario
+						return Point2D(a.x+x, a.y+y);
+					}
+
+					Point2D operator-(Point2D a){	//binario
+						return Point2D(x-a.x, y-a.y);
+					}
+
+					Point2D operator-() {		//unario
+						return Point2D(-x,-y);
+					}
+			};
+
+    Nel caso di operatore binario, l'operatore - viene invocato dall'istanza a, in quanto funzione membro di classe, ed ha come argomento b. Si noti quindi che a - b e b - a, hanno una semantica diversa non solo per le operazioni non commutative, ma in ragione del fatto che diversa è l'istanza che invoca la funzione membro.
+
+    Overloading del copy constructor:
+
+    Di default il copy constructor effettua una "Shallow Copy".
+	Questa copia consiste nel copiare tutti i campi valore ma non si effettua la copia dei puntatori contenuti nella classe.
+	L'overloading si rende necessario nel caso di allocazioni dinamiche per bypassare il meccanismo di copia bitwise stabilito di default dal compilatore;
+
+	es.		Matrice3D(const Matrice3D& other){
+				//copia del valore delle strutture dati allocate dinamicamente
+			}
+
+    L'implementazione dell'overloadingdell'operatore di assegnamento " = " è del tutto analoga a quella del copy constructor.
+
+	Tutti gli overloading che ritornano un reference rendono possibile utilizzare il valore di ritorno a sinistra di un assegnamento(come lvalue modificabile).
+
+	es.		Matrice3D<T>& operator= (const Matrice3D<T>& source)const{
+
+				this->memoryManagement(source);
+				return *this;
+			}
+
+    Overloading di tutti gli operatori di confronto:
+
+    Per l'overloading di questo tipo di operatori il tipo di ritono è sempre un booleano che sara true nel caso in cui l'espressione risulti vera e false altrimenti. L'unico parametro formale è un read-only reference al tipo definito dalla classe. Il motivo del riferimento "const" è che, almeno a livello logico, si prevede che questo tipo di confronto non debba in alcun modo modificare lo stato interno dell'oggetto confrontato.
+    Per lo stesso motivo può avere senso anteporre la keyword "const" al riferimento preso in input dall'overloading di operatori come:
+
+     es.        <type> operator+ (const <type>& x){}
+                <type> operator* (const <type>& x){}
+                <type> operator/ (const <type>& x){}
+                ...
+
+    Overloading di operatori speciali ++ e --
+
+    Il compilatore non intepreta allo stesso modo operatore di incremento/decremento unario se in forma postfissa o prefissa, di conseguenza, compilatore impone al programmatore di “discriminare” forma prefissa e postfissa nella definizione di overloading di tali operatori.
+
+    Prefissi -->    Ritornano un reference al tipo <type> e non prendono in input parametri:
+
+                <type>& operator++ (){}
+                <type>& operator-- (){}
+
+    Postfissi -->   Ritornano un oggetto di tipo <type> e prendono in input un parametro dummy(fantoccio):
+
+                <type> operator++ (int){}
+                <type> operator-- (int){}
+
+                    NB: Nessun parametro attuale corrisponderà tale parametro formale.
+
+    es.     Punto3D& operator++ (){  //Prefisso
+                x++;
+                y++;
+                z++;
+
+                return *this;
+            }
+
+            Punto3D operator++ (int){ //postfisso con "dummy parameter"
+                Punto3D aux = *this;
+                x++;
+                y++;
+                z++;
+
+                return aux;
+            }
+
+    Overloading operatore[] (di indicizzazione)
+
+    Deve essere implementato come operatore membro perchè strettamente legato al puntatore this e necessita di un parametro formale(solitamente un indice intero).
+    Il tipo di ritorno deve essere un reference se si necessita l'utilizzo del valore restituito come un l-value modificabile.
+
+    es.     class Array{
+                float* array;
+
+            public:
+                //...
+                float& operator[](const int idx){
+                    return array[idx];
+                }
+
+            };
+
+    Overloading operatori new e delete
+
+    Ridefinire new e delete localmente (sconsigliato farlo in senso globale):
+
+    • Implicitamente membri static;
+    • new deve allocare memoria e restituire un puntatore “generico” (void);
+    • delete deve deallocare memoria a partire da un certo puntatore;
+
+
+    Overloading operatore di redirezione dell'output <<
+
+	es.     	friend ostream& operator<< (ostream& os, const Matrice3D<T>& m);      //dentro la classe
+
+                ostream& operator<< (ostream& os, const Matrice3D<T>& m){       //fuori la classe
+
+					// inserimenti nell' ostream os...
+
+					return os;
+				}
+
+    Va implementato come operatore non membro e si dichiara friend per dare accesso alla classe ostream ai contenuti privati della classe Matrice3D.Il tipo di ritorno è un reference ad ostream.
+    Per la lettura dati da oggetto ed inserimento nello stream di output, il secondo parametro è un const reference (non va modificato);
+
+    Overloading operatore di redirezione dell'input >>
+
+	es.     	friend istream& operator>> (istream& is, Matrice3D<T>& m);      //dentro la classe
+
+                istream& operator>> (istream& is, const Matrice3D<T>& m){       //fuori la classe
+
+					// estrazione dall' istream is...
+
+					return is;
+				}
+
+    Per l'estrazione dati dallo stream di input ed “inserimento” nell' operando oggetto, il secondo parametro deve essere non-const (l'oggetto va modificato!)
+
+    Il sovraccarico di un operatore non deve comunque attribuirgli un significato completamente fuori contesto.
+	Non è possibile effettuare l'overloading di alcuni operatori:
+
+	- risolutore di scope ::
+	- operatore ternario ? :
+	- ecc..
+
+	Non è possibile modificare l'arietà degli operatori:
+
+	- a + b * c
