@@ -21,6 +21,16 @@ Risposta:
     Questo tipo di allocazione si rende necessaria per la restituzione di vettori da parte
     di una funzione.
 
+    Il fenomeno dell’ALIASING si ha quando un puntatore può essere creato come sostituto (alias) di un
+    altro ossia quando entrambi puntano alla stessa locazione di memoria allocata sia staicamente sia
+    dinamicamente (n.b. basta assegnare ad un puntatore il valore dell’altro).
+    Tale fenomeno, perfettamente lecito, può dare origine a gravi effetti collaterali (SIDE EFFECT) in
+    grado di bloccare l’esecuzione del programma (abend o crash).
+    Ad esempio è possibile avere zone di memoria allocate dinamicamente che diventano inaccessibili
+    (ossia allocate in memoria ma mai deallocate) non solo per la mancata deallocazione del
+    programmatore, ma per l’esecuzione di istruzioni particolari che hanno un effetto collaterale (side
+    effect) non previsto dal programatore.
+
 3)
     Nel segmento DATA risiedono invece le variabili allocate staticamente(es. var globali).
     Una variabile statica viene inizializzata contestualmente alla propria dichiarazione e
