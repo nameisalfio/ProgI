@@ -6,8 +6,9 @@
 
 Risposta:
 
-    Quando un programma dipende da un input esterno(es. cin) è possibile che si comporti inaspettatamente in base all'input ricevuto. Quando un programma termina la propria esecuzione restituisce al chiamante, solitamente la riga di comando,un valore intero (per convenzione è 0 se non ci sono errori, 1 in caso contrario).
-    L’header "cstdlib" mette a disposizione due costanti EXIT_FAILURE e EXIT_SUCCESS, che vengono utilizzate come valori di ritorno.
+    Quando un programma dipende da un input esterno(es. cin) è possibile che si comporti inaspettatamente in base all'input ricevuto. 
+    Quando un programma termina la propria esecuzione restituisce al chiamante, solitamente la riga di comando,un valore intero (per convenzione è 0 se non ci sono errori, 1 in caso contrario).
+    L’header "cstdlib" contiene due costanti EXIT_FAILURE e EXIT_SUCCESS, che vengono utilizzate come valori di ritorno.
 
     C++ mette a disposizione dei costrutti per la gestione dei casi di errore:
 

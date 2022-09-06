@@ -7,21 +7,27 @@
 Risposta:
 
     Scegliere come allocare la memoria per una variabile dipende dal problema che si sta
-    affrontando. Esistono diversi diversi segmenti di memoria:
+    affrontando. Esistono diversi diversi segmenti di memoria predisposti per diversi tipi di allocazione.
+    
+    
+1)  Nel segmento DATA risiedono invece le variabili allocate staticamente(es. var globali).
+    Una variabile statica viene inizializzata contestualmente alla propria dichiarazione e
+    ha uno scope esteso a tutto il programma dal punto in cui viene dichiarata.
+    Una variabile locale(automatica) dichiarata "static" diventa a tutti gli effetti una variabile globale (per lo scope e perchè viene inizializzata  una sola volta)
 
-1)
-    Uno di questi è lo STACK. Esso è una regione di memoria riservata a ciascuna funzione in esecuzione e che opera in modo LIFO(last in first out).
+2)
+    Lo STACK è una regione di memoria riservata a ciascuna funzione in esecuzione e che opera in modo LIFO(last in first out).
     Quando il programma avvia l’esecuzione di una funzione, quest’ultima riceve il suo stack frame, in cui vengono memorizzati VARIABILI LOCALI(allocate automaticamente) e INDIRIZZI DI RITORNO delle chiamate di funzione.
     Quando una funzione ne chiama un’altra, viene creato un nuovo stack frame e quando termina lo stack frame più recente, la porzione di memoria che occupava verrà liberato e si restituisce il controllo al chiamante.
     Alle variabili allocate nello stack delle funzioni viene riservata una quantità di memoria prefissata a compile-time e il loro tempo di vita coincide con quello del blocco di codice in cui si trovano.
 
-2)
+3)
     Esiste invece una regione di memoria denominata HEAP (free store), in cui possono essere allocati oggetti creati o accresciuti a run-time. La memoria occupata allocando dinamicamente NON viene restituita quando termina il blocco di codice contenente le variabili che invece permangono nella RAM.
     Si alza il rischio di memory leak (consumo non voluto di risorse dovuto alla mancata deallocazione dalla memoria), quindi è buona norma deallocare manualmente la memoria precedentemente occupata.
     Questo tipo di allocazione si rende necessaria per la restituzione di vettori da parte
-    di una funzione.
+    di una funzione. Nel caso in cui si restituisce un vettore allocato staticamente si ottiene un warning e se si tenta l'accesso viene generato un segmentation fault.
 
-    Il fenomeno dell’ALIASING si ha quando un puntatore può essere creato come sostituto (alias) di un
+    Il fenomeno dell’ALIASING si ha quando un puntatore viene creato come sostituto (alias) di un
     altro ossia quando entrambi puntano alla stessa locazione di memoria allocata sia staicamente sia
     dinamicamente (n.b. basta assegnare ad un puntatore il valore dell’altro).
     Tale fenomeno, perfettamente lecito, può dare origine a gravi effetti collaterali (SIDE EFFECT) in
@@ -30,13 +36,8 @@ Risposta:
     (ossia allocate in memoria ma mai deallocate) non solo per la mancata deallocazione del
     programmatore, ma per l’esecuzione di istruzioni particolari che hanno un effetto collaterale (side
     effect) non previsto dal programatore.
-
-3)
-    Nel segmento DATA risiedono invece le variabili allocate staticamente(es. var globali).
-    Una variabile statica viene inizializzata contestualmente alla propria dichiarazione e
-    ha uno scope esteso a tutto il programma dal punto in cui viene dichiarata.
-    Una variabile locale dichiarata "static" diventa a tutti gli effetti una variabile globale (per lo scope e perchè viene inizializzata  una sola volta)
-
+   
+    
 
     Esempio in C++:
 
@@ -47,17 +48,19 @@ Risposta:
 
     int* func(){
 
+        in val = 3;     //Allocazione automatica
+
         int* a = new int[2]{3,7};   //Allocazione dinamica, OK!
-        //int a[2] = {3, 7};  //Genera un warning e un segm.fault se tento l'accesso
+            //int a[2] = {3, 7};  //Genera un warning e un segm.fault se tento l'accesso
+
+        *(a+1) = val+4;
 
         return a;
     }
 
     int main(){
 
-        int* vet = func();  //allocazione automatica
-
-        cout << endl << vet[1] << endl;
+        int* vet = func();
 
     }
 

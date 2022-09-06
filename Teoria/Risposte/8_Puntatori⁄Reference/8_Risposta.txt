@@ -27,7 +27,7 @@ Risposta:
 
                 cout << ptr;        //stampa l'indirizzo in esadecimale di 'a'
                 cout << *ptr;       //stampa il valore della variabile 'a'
-                cout << &ptr;       //stampa l'indirizzo in memoria della variabile che punta ad 'a'
+                cout << &ptr;       //stampa l'indirizzo in memoria della variabile ptr che punta ad 'a'
 
                 *ptr = &a;          //ERRORE!  invalid conversion from int to int*
 
@@ -69,11 +69,13 @@ Risposta:
         es.     if(ptr)
                     ptr->metodo();
 
-    Per mantenere i vantaggi derivati dall'utilizzo dei puntatori(overhead pressochè nullo nel passaggio di parametri) e, allo stesso tempo, eliminare le complicazioni derivate dal loro utilizzo(esistenza e sintassi) sono stati introdotti i reference:
+    Per mantenere i vantaggi derivati dall'utilizzo dei puntatori(overhead pressochè nullo nel passaggio di parametri) e, allo stesso tempo, eliminare 
+    le complicazioni derivate dal loro utilizzo(esistenza e sintassi) sono stati introdotti i reference:
 
-    Un reference è una variabile che fa riferimento a un'altra variabile(alias).
-    Sia i puntatori che i riferimenti possono essere usati per riferirsi agli oggetti indirettamente. Sostengono
-    essenzialmente gli indirizzi di memoria come valori.
+    Un reference è una variabile che fa riferimento a un'altra variabile(alias) sostenendone l'indirizzo in memoria.
+    Sia i puntatori che i riferimenti possono essere usati per riferirsi agli oggetti indirettamente. 
+    Sostengono essenzialmente gli indirizzi di memoria come valori.
+    
     I due meccanismi, il pointer e reference, hanno sintassi e utilizzo diversi.
 
     -Vantaggi dei reference:
@@ -118,22 +120,24 @@ Risposta:
     es.    int a = 20;
            const int* ptr = &a;
 
-    Anteponendo const alla dichiarazione della variabile puntatore lo si rende "read-only", ovvero un  puntatore di sola lettura(o costante). Singifica che non è possibile modificare lo stato interno di a attraverso ptr.
+    Anteponendo const alla dichiarazione della variabile puntatore lo si rende "read-only", ovvero un  puntatore di sola lettura(o costante). 
+    Singifica che non è possibile modificare lo stato interno di a attraverso ptr.
 
     2)Puntatori a costanti:
 
     es.     int a = 20;
             int* const ptr = &a;
 
-    Inserendo la keyword "const" invece, tra il tipo e l'identificatore del puntatore, si ottiene un puntatore a costante, ovvero esso va inizializzato contestualmente alla sua dichiarazione e non potrà subire riassegnamenti.
+    Inserendo la keyword "const" invece, tra il tipo e l'identificatore del puntatore, si ottiene un puntatore a costante, ovvero 
+    esso va inizializzato contestualmente alla sua dichiarazione e non potrà subire riassegnamenti.
 
     3)Puntatori costanti a variabili costanti:
 
     es.     int a = 20;
             const int* const ptr = &a;
 
-    Con questa sintassi si indica un read-only pointer a costante, singifica che il puntatore non può cambiare oggetto di riferimento e in oltre non è possibile modificare lo stato interno di a tramite ptr.
-
+    Con questa sintassi si indica un read-only pointer a costante, singifica che il puntatore non può cambiare oggetto di riferimento ed 
+    in oltre non è possibile modificare lo stato interno di a tramite ptr.
 
     Si può utilizzare "const" anche con l'uso dei reference per ottenere dei read-only reference:
 

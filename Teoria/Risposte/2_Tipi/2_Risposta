@@ -43,6 +43,16 @@ Risposta:
     Si attribuisce il -1 al bit più a sinistra della codifica binaria, infatti se il primo bit è a 0
     il numero è positivo e è 1 il numero rappresentato è negativo.
 
+    MANTISSA:
+    Si calcola la codifica binaria del numero
+        ad esempio: 113.25 diventa 01110001.01)
+
+    Si normalizza portando la virgola a destra della prima cifra significativa del numero(sempre 1)
+        ad esempio: 1110001.01 diventa 1.11000101 × 2^6 (6 è il valore di 'e' per l'esponente)
+
+    Si rappresentano SOLO le cifre a destra della virgola fino al bit meno significativo
+        ad esempio: sarà M = 11000101_000000000000000
+
     ESPONENTE:
     Si rappresenta a meno di un valore k detto di BIAS
 
@@ -50,16 +60,6 @@ Risposta:
 
     Dove 'e' sarebbe il valore dell'esponente ottenuto dalla normalizzazione della mantissa e k è il
     valore di bias che per la rappresentazione a 32 bit vale +127
-
-    MANTISSA:
-    Si calcola la codifica binaria del numero
-        ad esempio: 113.2510 diventa 1110001.01)
-
-    Si normalizza portando la virgola a destra della prima cifra significativa del numero(sempre 1)
-        ad esempio: 1110001.01 diventa 1.11000101 × 2^6
-
-    Si rappresentano SOLO le cifre a destra della virgola fino al bit meno significativo
-        ad esempio: sarà M = 11000101_000000000000000
 
     Con 8 bit è possibile rappresentare tutti i valori da -126 a 127
 
@@ -82,20 +82,15 @@ Risposta:
 
     Altri tipi di dato, invece sono definiti dall'utente per rappresentare e modellare delle entità che normalmente non potrebbero essere rappresentate attraverso l'utilizzo di un tipo primitivo. Si definiscono tipi user-defined, e si "costruiscono" attraverso l'utilizzo delle classi.
 
-    Una classe è un insieme di oggetti che condividono una struttura comune formata da:
-
-    - dati che ne descrivono lo stato interno(attributi);
-    - descrizione di azioni che essi possono compiere(metodi o funzioni membro);
-
-    Le classi definiscono quindi tipi di dato non primitivi, detti user-defined ovvero definiti dall'utente, in funzione del problema da risolvere.Esse possono separare l'interfaccia dall'implementazione in modo che solo il programmatore sarà a conoscenza dei dettagli implementativi mentre l'utilizzatore ne dovrà conoscere dolo l'interfaccia;
-
-    La definizione di una classe si scompone in due parti:
+    Una classe è un insieme di "oggetti" che condividono una struttura comune formata da:
 
     -Una prima parte in cui vengono descritti i dati e l'interfaccia dell'oggetto, realizzata con l'uso di
      attributi(che a loro volta possono essere oggetti);
 
     -Una seconda parte che descrive l'implentazione delle azioni che modificano lo stato interno dell'oggetto,
      realizzata mediante l'utilizzo di funzioni membro, dette metodi;
+
+    Le classi possono separare l'interfaccia dall'implementazione in modo che solo il programmatore sarà a conoscenza dei dettagli implementativi mentre l'utilizzatore ne dovrà conoscere solo l'interfaccia;
 
     Il responsabile dell'istanziazione dell'oggetto di una determinata classe è il metodo "costruttore".
 	Esso è un metodo che ha lo stesso nome della classe e nessun tipo di ritorno.
@@ -110,8 +105,8 @@ Risposta:
 
     Relazioni part-of (has-a):
 
-        - Composizione: In questo tipo di relazione troviamo un oggetto che per esistere richiede l'esistenza di un altro oggetto che lo
-                        compone;
+        - Composizione: In questo tipo di relazione troviamo un oggetto che per esistere richiede l'esistenza di un altro oggetto  
+                        che lo compone;
 
                         es. Automobile-Serbatoio
 

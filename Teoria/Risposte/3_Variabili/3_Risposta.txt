@@ -8,39 +8,40 @@
 
 Risposta:
 
-    Le variabili sono le entità che descrivono lo stato di un programma, infatti ad ogni cambiamento del valore di una variabile si ha un cambiamento dello stato del programma. Le caratteristiche di una variabile sono:
+    Le variabili sono le entità che descrivono lo stato di un programma, infatti ad ogni cambiamento del valore di una variabile si ha un cambiamento dello stato del programma. 
+    Le caratteristiche di una variabile sono:
 
-    - identificatore: nome della variabile
+        - identificatore: nome della variabile
 
-    - lvalue: locazione di memoria a partire dal quale è memorizzata la variabile
+        - lvalue: locazione di memoria a partire dal quale è memorizzata la variabile
 
-    - rvalue: contenuto dell'area di memoria associata alla variabile
+        - rvalue: contenuto dell'area di memoria associata alla variabile
 
-    - tipo: insieme dei valori che può assumere la variabile
+        - tipo: insieme dei valori che può assumere la variabile
 
-    - scope: parte di programma in cui la variabile può essere manipolata
+        - scope: parte di programma in cui la variabile può essere manipolata
 
-    - tempo di vita: tempo in cui è valida l'associazione tra simbolo e indirizzo fisico
+        - tempo di vita: tempo in cui è valida l'associazione tra simbolo e indirizzo fisico
 
     Sintassi -->        <tipo> identificatore = valore;
 
     Ci sono diversi contesti dove si può dichiarare una variabile:
 
-    - Variabili Locali: dichiarata all'interno di un blocco di codice.
+    - Variabili Locali(automatiche): dichiarata all'interno di un blocco di codice.
                         Visibilità limitata al blocco di codice in cui sono dichiarate
 
-    - Parametri formali: dichiarate nella definizione dei parametri di funzione.
+    - Parametri formali(automatiche): dichiarate nella definizione dei parametri di funzione.
                          Visibilità limitata alla funzione che li ha come parametri
 
-    - Variabili globali: dichiarate fuori da una funzione.
+    - Variabili globali(statiche): dichiarate fuori da una funzione.
                          Visibilità estesa all'intera durata del programma dalla dichiarazione. Una variabile locale con lo stesso nome sovrascrive in automatico quella globale, che rimarrà in vita ma non sarà più visibile in quel blocco di codice.
                          Una variabile locale dichiarata "static" diventa a tutti gli effetti una variabile globale
 
     Esempio in C++:
 
-        const int x = 5;  //var. Globale
+        const int x = 5;  //var. Globale (alloc. statica)
 
-        void func(int a, int y=2){  //Parametro formale
+        void func(int a, int y=2){  //Parametro formale (alloc. automatica)
 
             a += y;
 
@@ -62,14 +63,17 @@ Risposta:
 
         }
 
-    Può essere necessaria la definizione di valori costanti che rimangono immutati per l'intera esecuzione del programma, ad esempio costanti numeriche. Questo può avvenire in due modi :
+    Può essere necessaria la definizione di valori costanti che rimangono immutati per l'intera esecuzione del programma, ad esempio costanti numeriche. 
+    Questo può avvenire in due modi :
 
     1- modificatore "const"
     2- direttiva del pre-processore "#define"
 
     Data l'immutabilità di una variabile costante, la sua inizializzazione deve essere contestuale alla dichiarazione e un tentativo di manipolazione alla variabile genererebbe un errore di compilazione.
 
-    L'accesso ad una variabile al di fuori della porzione di codice in cui è inizializzata può avvenire con la sue restituzione da parte di una funzione. Ci sono però dei casi in cui il meccanismo è complicato, come nel casso della restituzione di un vettore allocato all'interno di una funzione, infatti il suo ciclo di vita terminerebbe constestualmente al termine della funzione in cui si trova. Si può ovviare a quest'inconveniente allocando l'array dinamicamente e restituendo il puntatore al primo elemento, infatti, una variabile allocata dinamicamente non vede il proprio tempo di vita limitato ma permane nella RAM fino a che non la si dealloca manualmente.
+    L'accesso ad una variabile al di fuori della porzione di codice in cui è inizializzata può avvenire con la sue restituzione da parte di una funzione. 
+    Ci sono però dei casi in cui il meccanismo è complicato, come nel caso della restituzione di un vettore allocato all'interno di una funzione, infatti il suo ciclo di vita terminerebbe constestualmente al termine della funzione in cui si trova. 
+    Si può ovviare a quest'inconveniente allocando l'array dinamicamente e restituendo il puntatore al primo elemento, infatti, una variabile allocata dinamicamente non vede il proprio tempo di vita limitato ma permane nella RAM fino a che non la si dealloca manualmente.
 
     (approfondimento sull'allocazione della memoria in 1_Risposta.txt)
 

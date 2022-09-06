@@ -85,11 +85,10 @@ Relazione puntatori-array:
 
 
     Si faccia attenzione a non accedere a zone di memoria non allocate per l'applicazione:
+    Tuttavia l'istruzione non genera nessun errore a compile-time.
 
     es.  int vet[3] = {5, 2, 7};
          vet[5] = 6;        //errore a run-time
-
-    Tuttavia l'istruzione non genera nessun errore a compile-time.
 
     Si possono ricevere array come parametri formali o restituirli come valore di ritorno di una funzione.
     In questo caso si rende necessario allocare dinamicamente la memoria in quanto si necessita che la struttura permanga nella RAM anche dopo che si esce dalla funzione.

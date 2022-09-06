@@ -8,15 +8,16 @@
 
 Risposta:
 	
-	Una funzione è un blocco di codice contenente dichiarazioni e istruzioni finalizzato a compiere determinate azioni. Il suo scopo è quello di favorire la modularità, il riutilizzo e la manutenzione del codice.
+	Una funzione è un blocco di codice contenente dichiarazioni e istruzioni finalizzato a compiere determinate azioni.
+	Il suo scopo è quello di favorire la modularità, il riutilizzo e la manutenzione del codice.
 
 	Vantaggi:
 
-	1) Modularità: il programma è scomposto in più piccole unità di elaborazione che agiscono come moduli, 			   ciascuno con il proprio scopo;
+	1) Modularità: il programma è scomposto in più piccole unità di elaborazione che agiscono come moduli, ciascuno con il proprio scopo;
 
-	2) Riutilizzo: ogni funzione può essere inclusa e riutilizzata in diversi programmi, con la      					   conseguente mancanza di codice duplicato.
+	2) Riutilizzo: ogni funzione può essere inclusa e riutilizzata in diversi programmi, con la conseguente mancanza di codice duplicato.
 
-	3) Manutenzione: in caso di un errore logico, basta andare a correggere la singola funzione per 		                 correggere il problema anche in tutti i punti in cui viene invocata.
+	3) Manutenzione: in caso di un errore logico, basta andare a correggere la singola funzione per correggere il problema anche in tutti i punti in cui viene invocata.
 
 	Le funzioni vengono dichiarate attraverso un prototipo (firma o signature) nel seguente modo:
 
@@ -25,7 +26,8 @@ Risposta:
 	Il nome della funzione è bene che sia sensato e pertinente a quanto svolto dalla funzione.
 	Nel prototipo non è necessario definire anche il nome che assumeranno i parametri formali.
 
-	La sua definizione avviene con la stessa dicitura del prototipo seguita dal blocco di codice che ne contiene l'implementazione. L'istruzione "return" serve a tornare nel punto in cui la funzione è stata invocata e porterà con se un valore che verrà assegnato al chiamante.
+	La sua definizione avviene con la stessa dicitura del prototipo seguita dal blocco di codice che ne contiene l'implementazione. L'istruzione "return" serve a tornare 
+	nel punto in cui la funzione è stata invocata e porterà con se un valore che verrà assegnato al chiamante.
 
 		<tipo_ritorno> nome_funzione (parametri formali){
 			//istruzioni
@@ -33,11 +35,12 @@ Risposta:
 
 	Essa deve essere collocata prima di qualsiasi invocazione alla funzione nel caso un cui non venga specificato il prototipo.
 
-	I parametri formali sono dei segna-posto che verranno implicitamente sostituiti dai parametri attuali, ovvero dai valori che verranno "passati" alla funzione con la sua invocazione, per tanto non è essenziale attribuirvi lo stesso nome dei parametri con cui verrà invocata la funzione.
+	I parametri formali sono dei segna-posto che verranno implicitamente sostituiti dai parametri attuali, ovvero dai valori che 
+	verranno "passati" alla funzione con la sua invocazione, per tanto non è essenziale attribuirvi lo stesso nome dei parametri con cui verrà invocata la funzione.
 
 	Il passaggio dei parametri può avvenire in due modi :
 
-	- by value:	il passaggio per valore effettua una copia del valore che si vuole trasferire all'interno 				del parametro(diventa una variabile automatica pe rla funzione)
+	- by value:	il passaggio per valore effettua una copia del valore che si vuole trasferire all'interno del parametro(diventa una variabile automatica per la funzione)
 
 	- by reference: il passaggio per riferimento passa l'indirizzo in memoria della variabile;
 					In questo modo le istruzioni all’interno di una funzione possono modificare il contenuto della variabile il cui indirizzo è stato passato alla funzione.
@@ -47,17 +50,18 @@ Risposta:
 
 -	Overloading:
 
-	C++ consente di specificare più di una funzione con lo stesso nome (funzioni overload). Esse consentono di specificare semantiche diverse per una stessa funzione, a seconda dei tipi e del numero di argomenti. Quindi si hanno funzioni con lo stesso nome che cambiano semantica sulla base della loro firma.
+	C++ consente di specificare più di una funzione con lo stesso nome (funzioni overload). Esse consentono di specificare semantiche diverse per una stessa funzione, a seconda dei tipi e del numero di argomenti. 
+	Quindi si hanno funzioni con lo stesso nome che cambiano semantica sulla base della loro firma.
 	Il compilatore selezionerà la corretta versione di overloading della funzione sulla base del tipo e del numero di parametri che verranno utilizzati nell'invocazione, effettuando, ove possibile, opportune
 	promozioni e conversioni di tipo.
 
 	Overloading degli operatori:
 
-	L’overloading degli operatori permette di ridefinire la semantica degli operatori disponibili in C++ per tipi user-defined.Quando si fa overload di un operatore, uno dei due operandi è sempre un oggetto. L’overloading degli operatori si effettua infatti per consentire operazioni tra oggetti.
+	L’overloading degli operatori permette di ridefinire la semantica degli operatori disponibili in C++ per tipi user-defined.Quando si fa overload di un operatore, uno dei due operandi è sempre un oggetto. 
+	L’overloading degli operatori si effettua infatti per consentire operazioni tra oggetti.
 	Lo scopo dell'overloading di operatori è quello di semplificare la sintassi:
 
-	es. definire una funzione sum che calcoli la somma di due oggetti è ben diverso dalla definizione
-	    dell'operatore binario di somma '+';
+	es. definire una funzione sum che calcoli la somma di due oggetti è ben diverso dalla definizione dell'operatore binario di somma '+';
 
 	- Overloading operatori non-membro:
 
@@ -81,7 +85,8 @@ Risposta:
 
 	- Overloading operatori membro:
 
-	In questo caso, dovremo passare in input solo l’operando di destra nel caso di operatori binari o nessun operando nel caso di operatori unari, in quanto l'operando di sinistra è sempre l'oggetto su cui viene invocato il metodo(collegato al puntatore this).
+	In questo caso, dovremo passare in input solo l’operando di destra nel caso di operatori binari o nessun operando nel caso di operatori unari,
+	in quanto l'operando di sinistra è sempre l'oggetto su cui viene invocato il metodo(collegato al puntatore this).
 
 	es.		class Point2D {
 				double x, y;
@@ -141,7 +146,8 @@ Risposta:
 -	Funzioni template:
 
 	Per favorire ancora di più la riutilizzabilità del codice C++ mette a disposizione le funzioni template.
-	Il template implementa il concetto di tipo parametrizzato: il tipo viene specificato come se fosse un parametro. Si indica un tipo generico T tramite la sintassi:
+	Il template implementa il concetto di tipo parametrizzato: il tipo viene specificato come se fosse un parametro. 
+	Si indica un tipo generico T tramite la sintassi:
 
 			template<typename T>
 
@@ -149,7 +155,10 @@ Risposta:
 
 			template<class T>
 
-	Una funzione template è quindi una sorta di modello dal quale il compilatore genera opportune specializzazioni in corrispondenza di chiamate a funzione con parametri differenti(si riduce il lavoro del programmatore). Nel caso si scriva il prototipo separatamente rispetto all'implementazione, è necessario riportare il template del tipo generico anche sopra la firma.
+	Una funzione template è quindi una sorta di modello dal quale il compilatore genera opportune specializzazioni in corrispondenza
+	di chiamate a funzione con parametri differenti(si riduce il lavoro del programmatore). 
+	
+	Nel caso si scriva il prototipo separatamente rispetto all'implementazione, è necessario riportare il template del tipo generico anche sopra la firma.
 
 	es.		#include<iostream>
 			using namespace std;

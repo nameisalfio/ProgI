@@ -6,11 +6,16 @@ Risposta:
 
     In C++ una stringa può essere definita mediante oggetto string ma anche come array di caratteri(stringhe di C).
 
-        1) char s[] = "stringa";        //stringa di C++
+        1) string s = "stringa";        //stringa di C++
 
-        2) char s[] = {'s', 't', 'r', 'i', 'n', 'g', 'a', '\0'};        //Stringa di C
+        2) char s[] = "stringa";        //stringa di C
 
-    Dove '\0' è un carattere di terminazione che serve ad indicare che la stringa è finita. Nella prima notazione il carattere di terminazione viene inserito automaticamente dal compilatore. Se non viene inserito il carattere di terminazione, possono verificarsi problemi con le funzioni che manipolano le stringhe.
+            o equivalentemente
+
+        2) char s[] = {'s', 't', 'r', 'i', 'n', 'g', 'a', '\0'};        
+
+    Dove '\0' è un carattere di terminazione che serve ad indicare che la stringa è finita. Nella prima notazione il carattere di terminazione viene inserito automaticamente dal compilatore. 
+    Se non viene inserito il carattere di terminazione, possono verificarsi problemi con le funzioni che manipolano le stringhe.
 
     Una stringa di C è un puntatore costante a caratteri
 
@@ -22,6 +27,13 @@ Risposta:
 
     Ovviamente una stringa di C non ha a disposizione tutti i metodi previsti per l'oggetto string;
     Tuttavia è prevista una libreria che è possibile includere tramite l'header file <cstring> per manipolare array di caratteri, similmente ad oggetti string.
+    Non si può assegnare una stringa ad un array al di fuori della definizione:
+
+        es. char stringa[5];
+            stringa = “Ciao”;      // Darebbe luogo ad errore
+            strcpy(stringa, "Ciao");        //OK
+
+    Si utilizza la funzione di libreria strcpy (che automatizza l’aggiunta del carattere \0 alla fine della stringa) strcpy(nome, “Ciao”);
 
     es. Funzione di copia
 
@@ -39,7 +51,7 @@ Risposta:
         strcmp("paperino", "pippo");    //ritorna int < 0
         strcmp("pippo", "pippo");       //ritorna 0
 
-    es. Funzione si sottostringa
+    es. Funzione di sottostringa
 
         const char* strstr (const char* str1, const char* str2);    //prototipo
               char* strstr (char* str1, const char* str2);      //prototipo
@@ -100,6 +112,6 @@ Risposta:
     E’ possibile passare da un oggetto di tipo string a una c-string mediante il metodo c_str:
 
     es.     string ss = "Hello World";
-            const char* cs = s.c_str();     //il puntatore deve essere const
+            const char* cs = ss.c_str();     //il puntatore deve essere const
             cout << cs;
 
