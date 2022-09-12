@@ -1,4 +1,4 @@
-s10)Domanda:
+10)Domanda:
 
     Si introducano le classi e gli oggetti in C++, discutendo la loro utilità e i vantaggi del loro uso rispetto alla classica programmazione procedurale. SI discutano i principi fondamentali della programmazione a oggetti. Si facciano esempi di definizione di classi e istanziazione dei relativi oggetti in allocazione statica e dinamica.
 
@@ -28,7 +28,7 @@ Risposta:
 	-	completo(standard): prende tutti i parametri in input;
     -   costruttore delega : effettua una chiamata al costruttore standard passandogli dei parametri;
 	- 	copy constructor: copia bitwise (shallow-copy) dei dati di un oggetto per costruirne uno identico;
-                (non effettua una copia deei puntatori che unteranno quindi tutti alla stessa area di memoria)
+                (non effettua una copia dei puntatori che punteranno quindi tutti alla stessa area di memoria)
 
     Il responsabile della distruzione dell'oggetto di una determinata classe è il metodo "distruttore".
     Esso  viene chiamata automaticamente quando si distrugge un oggetto, ha lo stesso nome della sua classe preceduto dal carattere ~ (tilde). 
@@ -99,7 +99,8 @@ Risposta:
     EREDITARIETÀ :
     ---------------------
     Meccanismo che consente livelli di astrazione gerarchici che consentono di conservare le proprietà della classe base nelle classi derivate.
-    Una classe derivata eredita attributi e metodi dalla classe base già esistente. Un oggetto di classe derivata segue la relazione "is-a" rispetto alla classe base
+    Una classe derivata eredita attributi e metodi dalla classe base già esistente(non eredita i costruttori e i distruttori).
+    Un oggetto di classe derivata segue la relazione "is-a" rispetto alla classe base
 
         es.     bicycle is-a vehicle
 
@@ -174,7 +175,7 @@ Risposta:
 
     Regole per sfruttare il polimorfismo dinamico:
 
-    1) creare una gerarchia di classi in cui le operazioni più importanti siano definite nei metodi virtual nella
+    1) creare una gerarchia di classi in cui le operazioni più importanti siano definite nei metodi "virtual" nella
        classe base;
 
     2) ridefinire i metodi nelle classi derivate;
@@ -188,3 +189,63 @@ Risposta:
 
 	1) DYNAMIC CAST + CONTROLLO dell'esistenza del puntatore per capire se il cast è avvenuto con successo
 	2) TYPEID() + STATIC CAST
+
+    Metodi virtuali puri:
+
+	In certi casi non è possibile dare una definizione di base di un metodo nella classe madre, si parla allora di metodi "pure-virtual", ovvero il significato di quel metodo deve essere necessariamente ridefinito nelle classi figlie affinchè possa essere istanziato correttamente l'oggetto. Si definisce un metodo virtuale puro utilizzando la seguente sintassi:
+
+            virtual nome_metodo([eventuali parametri]) = 0;		//virtuale puro
+
+	• Una classe con uno o più metodi virtuali puri si dice classe astratta;
+
+	• Non si possono creare istanze di una classe astratta;
+
+	• È comunque possibile dichiarare puntatori e reference a tipi astratti;
+
+	• Se una classe derivata non fornisce l’implementazione di una o più funzioni virtuali pure, allora anche essa diverrà
+	  astratta;
+
+	es.		class poligono{
+
+			public:
+				poligono(){}
+				virtual void printArea() = 0;
+			};
+
+			class quadrato : public poligono{
+				int lato;
+
+			public:
+				quadrato(int lato):lato(lato){}
+				void printArea(){cout << lato*lato << endl;}
+			};
+
+			class triangolo : public poligono{
+				int lato;
+
+			public:
+				triangolo(int lato):lato(lato){}
+				void printArea(){cout << (lato*lato)/2 << endl;}
+			};
+
+//Versione errata
+
+			poligono* q;
+			q->printArea();		//genera errore a run-time (non si sa quale override richiamare)
+
+//Versione corretta
+
+			poligono* q;
+
+			int c;
+			cout << "Inserisci c: " << endl;
+			cin >>c;
+
+			if(c){
+				q = new quadrato(5);		//polimorfismo dinamico
+				q->printArea();
+			}else{
+				q = new triangolo(5);		//polimorfismo dinamico
+				q->printArea();
+			}
+
