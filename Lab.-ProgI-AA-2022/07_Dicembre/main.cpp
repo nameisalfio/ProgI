@@ -97,12 +97,14 @@ public:
 		num_times++;
 
 		int vals[num_rollers];
+		int sum = 0;
 
 		for(int i=0; i<num_rollers; i++)
 		{
 			rollers[i]->roll(rand()%10 + 3);
+			sum += rollers[i]->getValue();
 			vals[i] = rollers[i]->getValue();
-			coins += vals[i];
+			coins += sum;
 		}
 
 		bool vincente = true;
@@ -116,6 +118,9 @@ public:
 			}
 		}
 
+		if(sum > max)
+			max = sum;
+
 		if(vincente)
 		{
 			num_wins++;
@@ -123,11 +128,6 @@ public:
 			coins = 0;
 			int sum = 0;
 
-			for(int i=0; i<num_rollers; i++)
-				sum += vals[i];
-			
-			if(sum > max)
-				max = sum;
 			return tmp;
 		}
 		return 0;	
